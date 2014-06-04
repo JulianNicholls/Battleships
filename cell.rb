@@ -1,14 +1,39 @@
 class Cell
-  attr_reader :state
+  CHARS = { empty: ' ', occupied: '+', hit: '*', miss: 'X' }
   
-  def initialize( state = :empty )
-    @state = state
+  attr_reader :state
+  attr_accessor :visible
+  
+  def initialize( state = :empty, visible = false )
+    @state, @visible = state, visible
   end
   
   def attack
-    return false if state == :empty || state == :hit
+    show
+    return false if state == :hit || state == :miss
     
-    @state = :hit
-    true
+    @state = state == :occupied ? :hit : :miss 
+    
+    state == :hit
+  end
+  
+  def hide
+    self.visible = false
+  end
+
+  def show
+    self.visible = true
+  end
+  
+  def state_char
+    visible ? CHARS[state] : ' '
+  end
+  
+  def set
+    @state = :occupied
+  end
+  
+  def empty?
+    state == :empty || state == :miss
   end
 end
