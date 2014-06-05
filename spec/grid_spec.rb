@@ -107,4 +107,38 @@ describe Grid do
       grid.cell_at( 'D5' ).state_char.must_equal 'X'
     end
   end
+  
+  describe '#Grid.next' do
+    it 'should move to the next column' do
+      Grid.next( 'G1', :across ).must_equal 'G2'
+      Grid.next( 'G5', :across ).must_equal 'G6'
+      Grid.next( 'G9', :across ).must_equal 'G10'
+    end
+    
+    it 'should move to the next row' do
+      Grid.next( 'A5', :down ).must_equal 'B5'
+      Grid.next( 'D5', :down ).must_equal 'E5'
+      Grid.next( 'I5', :down ).must_equal 'J5'
+    end
+  end
+
+  describe '#Grid.prev' do
+    it 'should move to the prev column' do
+      Grid.prev( 'G2', :across ).must_equal 'G1'
+      Grid.prev( 'G5', :across ).must_equal 'G4'
+      Grid.prev( 'G10', :across ).must_equal 'G9'
+    end
+    
+    it 'should move to the prev row' do
+      Grid.prev( 'B5', :down ).must_equal 'A5'
+      Grid.prev( 'D5', :down ).must_equal 'C5'
+      Grid.prev( 'J5', :down ).must_equal 'I5'
+    end
+  end
+  
+  describe '#Grid.neighbours' do
+    it 'should return the neigbours for a location' do
+      Grid.neighbours( 'B5' ).must_equal ['B4', 'B6', 'A5', 'C5']
+    end
+  end
 end
