@@ -1,2 +1,63 @@
 class Ship
+  attr_reader :parts
+
+  def initialize( grid, positions = nil, length = 0 )
+    fail "Position list wrong length #{positions.length}, should be #{length}" \
+      unless positions.nil? || positions.size == length
+
+    @grid  = grid
+    @parts = positions || insert_into( grid, length )
+  end
+
+  def name
+    self.class.to_s
+  end
+
+  def insert_into( grid, length )
+    fail "Cannot insert a zero-length ship" if length == 0
+    poses = []
+
+    loop do
+      dir = [:across, :down][rand 2]
+      if dir == :across
+        cur = ('A'..'J').to_a[rand 10] + rand( 1..(11 - length) ).to_s
+      else
+        cur = ('A'..'J').to_a[rand( 10 - length )] + rand( 1..10 ).to_s
+      end
+
+      poses = try( grid, length, cur, dir )
+      break unless poses.nil?
+    end
+
+    poses.each { |pos| grid.cell_at( pos ).set }
+    poses
+  end
+
+  def sunk?
+    parts.all? { |pos| @grid.cell_at( pos ).state == :hit }
+  end
+
+  private
+
+  def try( grid, length, cur, dir )
+    poses = []
+
+    loop do
+      break unless isolated?( cur )
+
+      poses << cur
+      return poses if poses.size == length
+      cur = Grid.next( cur, dir )
+    end
+
+    nil
+  end
+  
+  def isolated?( pos )
+    return false unless @grid.cell_at( pos ).empty?
+    
+    Grid.neighbours( pos ).each { |loc| return false unless @grid.cell_at( loc ).empty? }
+    
+    true
+  end
 end
