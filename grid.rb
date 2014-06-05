@@ -1,6 +1,35 @@
 require './cell'
 
 class Grid
+  def self.next( pos, direction )
+    mdata = /([A-L])(\d{1,2})/.match pos
+    
+    if direction == :across
+      mdata[1] + (mdata[2].to_i + 1).to_s
+    else
+      mdata[1].next + mdata[2]
+    end
+  end
+
+  def self.prev( pos, direction )
+    mdata = /([A-L])(\d{1,2})/.match pos
+    letters = ('A'..'J').to_a
+    
+    if direction == :across
+      mdata[1] + (mdata[2].to_i - 1).to_s
+    else
+      row = letters[letters.index( mdata[1] ) - 1]
+      row + mdata[2]
+    end
+  end
+  
+  def Grid.neighbours( pos )
+    [
+      Grid.prev( pos, :across ), Grid.next( pos, :across ),
+      Grid.prev( pos, :down ), Grid.next( pos, :down )
+    ]
+  end
+  
   def initialize( visible = false, width = 10, height = 10 )
     @width, @height = width, height
     @grid = empty_grid( width, height, visible )
@@ -25,7 +54,7 @@ class Grid
     
     if headers
       str << "  "
-      (1..10).each { |n| str << "#{n} " } if headers
+      (1..10).each { |n| str << format( "%-2d", n ) } if headers
       str << "\n" 
     end
     
