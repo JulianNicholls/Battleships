@@ -5,8 +5,4 @@ Rake::TestTask.new do |t|
   t.test_files = Dir.glob('spec/**/*_spec.rb')
 end
  
-task :flog do
-  sh "flog -g ."
-end
-
 task default: :test

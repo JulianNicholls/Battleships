@@ -8,20 +8,20 @@ require './shiptypes'
 describe Ship do
   let( :grid ) { Grid.new :visible }
 
-  describe '#initialise' do    
+  describe '#initialise' do
     it 'should be initializable with a random position' do
-      bs = Ship.new( grid, nil, 5 )
+      Ship.new( grid, nil, 5 )
     end
-    
+
     it 'should be initializable with a set of positions' do
-      bs = Ship.new( grid, ['A1', 'A2', 'A3', 'A4'], 4 )
+      Ship.new( grid, %w(A1 A2 A3 A4), 4 )
     end
 
     it 'should throw an error if the position list is the wrong size' do
-      proc { Ship.new( grid, ['A1', 'A2', 'A3', 'A4'], 3 ) }.must_raise RuntimeError
+      proc { Ship.new( grid, %w(A1 A2 A3 A4), 3 ) }.must_raise RuntimeError
     end
   end
-  
+
   describe '#name' do
     it 'should return its name' do
       Ship.new( grid, nil, 5 ).name.must_equal 'Ship'
@@ -30,26 +30,26 @@ describe Ship do
 
   describe '#parts' do
     it 'should return the grid positions the ship occupies' do
-      poses = ['A1', 'A2', 'A3', 'A4']
-      
+      poses = %w(A1 A2 A3 A4)
+
       bs = Battleship.new( grid, poses )
       bs.parts.must_equal poses
     end
-  end  
+  end
 
   describe 'Ship#insert_into' do
     it 'should put the battleship into the grid somewhere' do
       bs = Battleship.new( grid )
-      
+
       bs.parts.each { |pos| grid.cell_at( pos ).state.must_equal :occupied }
     end
   end
-  
+
   describe 'Ship#sunk?' do
     it 'should return false if any part is not hit' do
       bs   = Battleship.new( grid )
       most = bs.parts[1..-1]
-      
+
       most.each do |pos|
         grid.attack( pos )
         bs.sunk?.must_equal false
@@ -58,31 +58,31 @@ describe Ship do
 
     it 'should not return true if any part is not hit' do
       bs  = Battleship.new( grid )
-      
+
       bs.parts.each { |pos| grid.attack( pos ) }
-  
+
       bs.sunk?.must_equal true
     end
   end
 end
 
 describe AircraftCarrier do
-  let( :grid ) { Grid.new :visible }
+  let( :grid ) { Grid.new }
 
   describe '#initialize' do
     it 'should be initializable with a random position' do
-      bs = AircraftCarrier.new( grid )
+      AircraftCarrier.new( grid )
     end
 
     it 'should be initializable with a set of positions' do
-      bs = AircraftCarrier.new( grid, ['A1', 'A2', 'A3', 'A4', 'A5'] )
+      AircraftCarrier.new( grid, %w(A1 A2 A3 A4 A5) )
     end
 
     it 'should throw an error if the position list is the wrong size' do
-      proc { AircraftCarrier.new( grid, ['A1', 'A2', 'A3'] ) }.must_raise RuntimeError
+      proc { AircraftCarrier.new( grid, %w(A1 A2 A3 A4) ) }.must_raise RuntimeError
     end
   end
-  
+
   describe '#name' do
     it 'should return its name' do
       AircraftCarrier.new( grid ).name.must_equal 'Aircraft Carrier'
@@ -95,18 +95,18 @@ describe Battleship do
 
   describe '#initialize' do
     it 'should be initializable with a random position' do
-      bs = Battleship.new( grid )
+      Battleship.new( grid )
     end
 
     it 'should be initializable with a set of positions' do
-      bs = Battleship.new( grid, ['A1', 'A2', 'A3', 'A4'] )
+      Battleship.new( grid, %w(A1 A2 A3 A4) )
     end
 
     it 'should throw an error if the position list is the wrong size' do
-      proc { Battleship.new( grid, ['A1', 'A2', 'A3'] ) }.must_raise RuntimeError
+      proc { Battleship.new( grid, %w(A1 A2 A3) ) }.must_raise RuntimeError
     end
   end
-  
+
   describe '#name' do
     it 'should return its name' do
       Battleship.new( grid ).name.must_equal 'Battleship'
@@ -119,18 +119,18 @@ describe Cruiser do
 
   describe '#initialize' do
     it 'should be initializable with a random position' do
-      bs = Cruiser.new( grid )
+      Cruiser.new( grid )
     end
 
     it 'should be initializable with a set of positions' do
-      bs = Cruiser.new( grid, ['A1', 'A2', 'A3'] )
+      Cruiser.new( grid, %w(A1 A2 A3) )
     end
 
     it 'should throw an error if the position list is the wrong size' do
-      proc { Cruiser.new( grid, ['A1', 'A2', 'A3', 'A4'] ) }.must_raise RuntimeError
+      proc { Cruiser.new( grid, %w(A1 A2 A3 A4) ) }.must_raise RuntimeError
     end
   end
-  
+
   describe '#name' do
     it 'should return its name' do
       Cruiser.new( grid ).name.must_equal 'Cruiser'
@@ -143,18 +143,18 @@ describe Destroyer do
 
   describe '#initialize' do
     it 'should be initializable with a random position' do
-      bs = Destroyer.new( grid )
+      Destroyer.new( grid )
     end
 
     it 'should be initializable with a set of positions' do
-      bs = Destroyer.new( grid, ['A1', 'A2'] )
+      Destroyer.new( grid, %w(A1 A2) )
     end
 
     it 'should throw an error if the position list is the wrong size' do
-      proc { Destroyer.new( grid, ['A1', 'A2', 'A3'] ) }.must_raise RuntimeError
+      proc { Destroyer.new( grid, %w(A1 A2 A3) ) }.must_raise RuntimeError
     end
   end
-  
+
   describe '#name' do
     it 'should return its name' do
       Destroyer.new( grid ).name.must_equal 'Destroyer'
@@ -167,18 +167,18 @@ describe Submarine do
 
   describe '#initialize' do
     it 'should be initializable with a random position' do
-      bs = Submarine.new( grid )
+      Submarine.new( grid )
     end
 
     it 'should be initializable with a set of positions' do
-      bs = Submarine.new( grid, ['A1'] )
+      Submarine.new( grid, %w(A1) )
     end
 
     it 'should throw an error if the position list is the wrong size' do
-      proc { Submarine.new( grid, ['A1', 'A2'] ) }.must_raise RuntimeError
+      proc { Submarine.new( grid, %w(A1 A2) ) }.must_raise RuntimeError
     end
   end
-  
+
   describe '#name' do
     it 'should return its name' do
       Submarine.new( grid ).name.must_equal 'Submarine'

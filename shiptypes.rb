@@ -1,5 +1,6 @@
 require './ship'
 
+# Aircraft Carrier
 class AircraftCarrier < Ship
   LENGTH = 5
 
@@ -12,6 +13,7 @@ class AircraftCarrier < Ship
   end
 end
 
+# Battleship
 class Battleship < Ship
   LENGTH = 4
 
@@ -20,6 +22,7 @@ class Battleship < Ship
   end
 end
 
+# Cruiser
 class Cruiser < Ship
   LENGTH = 3
 
@@ -28,6 +31,7 @@ class Cruiser < Ship
   end
 end
 
+# Destroyer
 class Destroyer < Ship
   LENGTH = 2
 
@@ -36,6 +40,7 @@ class Destroyer < Ship
   end
 end
 
+# Submarine
 class Submarine < Ship
   LENGTH = 1
 

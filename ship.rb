@@ -1,3 +1,4 @@
+# Generic Ship
 class Ship
   attr_reader :parts
 
@@ -6,30 +7,24 @@ class Ship
       unless positions.nil? || positions.size == length
 
     @grid  = grid
-    @parts = positions || insert_into( grid, length )
+    @parts = positions || insert_into_grid( length )
   end
 
   def name
     self.class.to_s
   end
 
-  def insert_into( grid, length )
-    fail "Cannot insert a zero-length ship" if length == 0
+  def insert_into_grid( length )
+    fail 'Cannot insert a zero-length ship' if length == 0
     poses = []
 
     loop do
-      dir = [:across, :down][rand 2]
-      if dir == :across
-        cur = ('A'..'J').to_a[rand 10] + rand( 1..(11 - length) ).to_s
-      else
-        cur = ('A'..'J').to_a[rand( 10 - length )] + rand( 1..10 ).to_s
-      end
-
-      poses = try( grid, length, cur, dir )
+      dir, cur = random_start_point( length )
+      poses = try( length, cur, dir )
       break unless poses.nil?
     end
 
-    poses.each { |pos| grid.cell_at( pos ).set }
+    poses.each { |pos| @grid.cell_at( pos ).set }
     poses
   end
 
@@ -39,7 +34,19 @@ class Ship
 
   private
 
-  def try( grid, length, cur, dir )
+  def random_start_point( length )
+    dir = [:across, :down][rand 2]
+
+    if dir == :across
+      cur = ('A'..'J').to_a[rand 10] + rand( 1..(11 - length) ).to_s
+    else
+      cur = ('A'..'J').to_a[rand( 10 - length )] + rand( 1..10 ).to_s
+    end
+
+    [dir, cur]
+  end
+
+  def try( length, cur, dir )
     poses = []
 
     loop do
@@ -52,12 +59,10 @@ class Ship
 
     nil
   end
-  
+
   def isolated?( pos )
     return false unless @grid.cell_at( pos ).empty?
-    
-    Grid.neighbours( pos ).each { |loc| return false unless @grid.cell_at( loc ).empty? }
-    
-    true
+
+    Grid.neighbours( pos ).all? { |loc| @grid.cell_at( loc ).empty? }
   end
 end
