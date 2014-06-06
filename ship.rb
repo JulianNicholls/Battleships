@@ -1,5 +1,7 @@
 # Generic Ship
 class Ship
+  ROWS = 'ABCDEFGHIJ'
+  
   attr_reader :parts
 
   def initialize( grid, positions = nil, length = 0 )
@@ -38,9 +40,9 @@ class Ship
     dir = [:across, :down][rand 2]
 
     if dir == :across
-      cur = ('A'..'J').to_a[rand 10] + rand( 1..(11 - length) ).to_s
+      cur = ROWS[rand 10] + rand( 1..(11 - length) ).to_s
     else
-      cur = ('A'..'J').to_a[rand( 10 - length )] + rand( 1..10 ).to_s
+      cur = ROWS[rand( 10 - length )] + rand( 1..10 ).to_s
     end
 
     [dir, cur]
