@@ -2,33 +2,49 @@ require './cell'
 
 # Grid
 class Grid
+  ROWS = 'ABCDEFGHIJ'
+
   def self.next( pos, direction )
     mdata = /([A-L])(\d{1,2})/.match pos
 
     if direction == :across
+      return nil if mdata[2].to_i == 10
       mdata[1] + (mdata[2].to_i + 1).to_s
     else
+      return nil if mdata[1] == ROWS[-1]
       mdata[1].next + mdata[2]
     end
   end
 
   def self.prev( pos, direction )
     mdata = /([A-L])(\d{1,2})/.match pos
-    letters = ('A'..'J').to_a
 
     if direction == :across
+      return nil if mdata[2].to_i == 1
       mdata[1] + (mdata[2].to_i - 1).to_s
     else
-      row = letters[letters.index( mdata[1] ) - 1]
+      return nil if mdata[1] == ROWS[0]
+      row = ROWS[ROWS.index( mdata[1] ) - 1]
       row + mdata[2]
     end
   end
 
   def self.neighbours( pos )
-    [
-      Grid.prev( pos, :across ), Grid.next( pos, :across ),
-      Grid.prev( pos, :down ), Grid.next( pos, :down )
-    ]
+    neighs = []
+    
+    nnext = Grid.prev( pos, :across ) 
+    neighs << nnext unless nnext.nil?
+
+    nnext = Grid.next( pos, :across ) 
+    neighs << nnext unless nnext.nil?
+
+    nnext = Grid.prev( pos, :down ) 
+    neighs << nnext unless nnext.nil?
+
+    nnext = Grid.next( pos, :down ) 
+    neighs << nnext unless nnext.nil?
+    
+    neighs
   end
 
   def initialize( visible = false, width = 10, height = 10 )
@@ -53,7 +69,7 @@ class Grid
   def to_s( headers = false )
     str = headers ? top_header : ''
 
-    ('A'..'J').each do |letter|
+    ROWS.each_char do |letter|
       str << "#{letter} " if headers
 
       (1..10).each do |col|

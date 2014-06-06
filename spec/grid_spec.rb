@@ -121,6 +121,11 @@ describe Grid do
       Grid.next( 'D5', :down ).must_equal 'E5'
       Grid.next( 'I5', :down ).must_equal 'J5'
     end
+    
+    it 'should return nil if there is no next' do
+      Grid.next( 'G10', :across ).must_equal nil
+      Grid.next( 'J3', :down ).must_equal nil
+    end
   end
 
   describe '#Grid.prev' do
@@ -135,11 +140,39 @@ describe Grid do
       Grid.prev( 'D5', :down ).must_equal 'C5'
       Grid.prev( 'J5', :down ).must_equal 'I5'
     end
+    
+    it 'should return nil if there is no prev' do
+      Grid.prev( 'G1', :across ).must_equal nil
+      Grid.prev( 'A3', :down ).must_equal nil
+    end
   end
 
   describe '#Grid.neighbours' do
-    it 'should return the neigbours for a location' do
+    it 'should return all the neighbours for a middle location' do
       Grid.neighbours( 'B5' ).must_equal %w(B4 B6 A5 C5)
+    end
+
+    it 'should return three neighbours for a top location' do
+      Grid.neighbours( 'A5' ).must_equal %w(A4 A6 B5)
+    end
+
+    it 'should return three neighbours for a left location' do
+      Grid.neighbours( 'B1' ).must_equal %w(B2 A1 C1)
+    end
+
+    it 'should return three neighbours for a right location' do
+      Grid.neighbours( 'B10' ).must_equal %w(B9 A10 C10)
+    end
+
+    it 'should return three neighbours for a bottom location' do
+      Grid.neighbours( 'J5' ).must_equal %w(J4 J6 I5)
+    end
+
+    it 'should return just two neighbours for a corner location' do
+      Grid.neighbours( 'A1' ).must_equal %w(A2 B1)
+      Grid.neighbours( 'A10' ).must_equal %w(A9 B10)
+      Grid.neighbours( 'J1' ).must_equal %w(J2 I1)
+      Grid.neighbours( 'J10' ).must_equal %w(J9 I10)
     end
   end
 end
