@@ -1,7 +1,7 @@
 # Generic Ship
 class Ship
   ROWS = 'ABCDEFGHIJ'
-  
+
   attr_reader :parts
 
   def initialize( grid, positions = nil, length = 0 )

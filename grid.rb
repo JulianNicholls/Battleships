@@ -31,19 +31,19 @@ class Grid
 
   def self.neighbours( pos )
     neighs = []
-    
-    nnext = Grid.prev( pos, :across ) 
+
+    nnext = Grid.prev( pos, :across )
     neighs << nnext unless nnext.nil?
 
-    nnext = Grid.next( pos, :across ) 
+    nnext = Grid.next( pos, :across )
     neighs << nnext unless nnext.nil?
 
-    nnext = Grid.prev( pos, :down ) 
+    nnext = Grid.prev( pos, :down )
     neighs << nnext unless nnext.nil?
 
-    nnext = Grid.next( pos, :down ) 
+    nnext = Grid.next( pos, :down )
     neighs << nnext unless nnext.nil?
-    
+
     neighs
   end
 

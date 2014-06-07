@@ -121,7 +121,7 @@ describe Grid do
       Grid.next( 'D5', :down ).must_equal 'E5'
       Grid.next( 'I5', :down ).must_equal 'J5'
     end
-    
+
     it 'should return nil if there is no next' do
       Grid.next( 'G10', :across ).must_equal nil
       Grid.next( 'J3', :down ).must_equal nil
@@ -140,7 +140,7 @@ describe Grid do
       Grid.prev( 'D5', :down ).must_equal 'C5'
       Grid.prev( 'J5', :down ).must_equal 'I5'
     end
-    
+
     it 'should return nil if there is no prev' do
       Grid.prev( 'G1', :across ).must_equal nil
       Grid.prev( 'A3', :down ).must_equal nil
