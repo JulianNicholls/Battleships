@@ -94,34 +94,34 @@ describe Cell do
     end
   end
 
-  describe '#state_char' do
+  describe '#shape' do
     it "should always return ' ' if the cell isn't visible" do
       empty = Cell.new
-      empty.state_char.must_equal ' '
+      empty.shape.must_equal ' '
 
       occ = Cell.new :occupied
-      occ.state_char.must_equal ' '
+      occ.shape.must_equal ' '
 
       occ.attack
-      occ.state_char.wont_equal ' '   # Always visible once attacked
-      occ.state_char.must_equal '*'
+      occ.shape.wont_equal ' '   # Always visible once attacked
+      occ.shape.must_equal '*'
     end
 
     it "should return '+' for occupied and visible" do
       occ = Cell.new( :occupied, :visible )
-      occ.state_char.must_equal '+'
+      occ.shape.must_equal '+'
     end
 
     it "should return 'X' for miss" do
       occ = Cell.new( :empty )
       occ.attack
-      occ.state_char.must_equal 'X'
+      occ.shape.must_equal 'X'
     end
 
     it "should return '*' for hit" do
       occ = Cell.new( :occupied )
       occ.attack
-      occ.state_char.must_equal '*'
+      occ.shape.must_equal '*'
     end
   end
 

@@ -73,7 +73,7 @@ class Grid
       str << "#{letter} " if headers
 
       (1..10).each do |col|
-        str << "#{cell_at( letter, col ).state_char} "
+        str << "#{cell_at( letter, col ).shape} "
       end
 
       str << "\n"

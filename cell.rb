@@ -26,7 +26,7 @@ class Cell
     self.visible = true
   end
 
-  def state_char
+  def shape
     visible ? CHARS[state] : ' '
   end
 

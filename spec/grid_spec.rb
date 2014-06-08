@@ -98,14 +98,14 @@ describe Grid do
       grid.attack( 'D5' )
 
       grid.cell_at( 'D5' ).state.must_equal :hit
-      grid.cell_at( 'D5' ).state_char.must_equal '*'
+      grid.cell_at( 'D5' ).shape.must_equal '*'
     end
 
     it 'should register a miss' do
       grid.attack( 'D5' )
 
       grid.cell_at( 'D5' ).state.must_equal :miss
-      grid.cell_at( 'D5' ).state_char.must_equal 'X'
+      grid.cell_at( 'D5' ).shape.must_equal 'X'
     end
   end
 
