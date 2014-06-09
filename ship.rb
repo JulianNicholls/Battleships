@@ -12,7 +12,7 @@ class Ship
     @parts = positions || insert_into_grid( length )
   end
 
-  def name
+  def type
     self.class.to_s
   end
 

@@ -13,7 +13,7 @@ describe Cell do
     end
 
     it 'should be initializable empty and invisible by choice' do
-      cell = Cell.new :empty, false
+      cell = Cell.new( :empty, false )
       cell.state.must_equal :empty
       cell.empty?.must_equal true
       cell.visible.must_equal false
@@ -45,23 +45,27 @@ describe Cell do
     it 'should return empty state correctly' do
       cell = Cell.new
       cell.state.must_equal :empty
+      cell.empty?.must_equal true
     end
 
     it 'should return occupied state correctly' do
       cell = Cell.new :occupied
       cell.state.must_equal :occupied
+      cell.empty?.must_equal false
     end
 
     it 'should return hit state correctly' do
       cell = Cell.new :occupied
       cell.attack
       cell.state.must_equal :hit
+      cell.empty?.must_equal false
     end
 
     it 'should return miss state correctly' do
       cell = Cell.new
       cell.attack
       cell.state.must_equal :miss
+      cell.empty?.must_equal true
     end
   end
 

@@ -8,7 +8,7 @@ class AircraftCarrier < Ship
     super( grid, positions, LENGTH )
   end
 
-  def name
+  def type
     'Aircraft Carrier'
   end
 end

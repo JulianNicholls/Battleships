@@ -3,7 +3,7 @@ require 'minitest/pride'
 
 require './grid'
 
-# testversion that is indexed row, column numerically
+# test version that is indexed row, column numerically
 class Grid
   def cell_at_set( row, col )
     @grid[row * @width + col].set
@@ -24,11 +24,11 @@ describe Grid do
       grid.cell_at( 'D5' ).state.must_equal :empty
     end
 
-    it "should return a cell via ('D', 5)" do
+    it "should return a cell via ('D', '5')" do
       grid.cell_at( 'D', '5' ).state.must_equal :empty
     end
 
-    it "should return a cell via ('d5') and ('d', 5)" do
+    it "should return a cell via ('d5') and ('d', '5')" do
       grid.cell_at( 'd5' ).state.must_equal :empty
       grid.cell_at( 'd', '5' ).state.must_equal :empty
     end
@@ -110,13 +110,13 @@ describe Grid do
   end
 
   describe '#Grid.next' do
-    it 'should move to the next column' do
+    it 'should move to the next column in the middle' do
       Grid.next( 'G1', :across ).must_equal 'G2'
       Grid.next( 'G5', :across ).must_equal 'G6'
       Grid.next( 'G9', :across ).must_equal 'G10'
     end
 
-    it 'should move to the next row' do
+    it 'should move to the next row in the middle' do
       Grid.next( 'A5', :down ).must_equal 'B5'
       Grid.next( 'D5', :down ).must_equal 'E5'
       Grid.next( 'I5', :down ).must_equal 'J5'
@@ -129,13 +129,13 @@ describe Grid do
   end
 
   describe '#Grid.prev' do
-    it 'should move to the prev column' do
+    it 'should move to the prev column in the middle' do
       Grid.prev( 'G2', :across ).must_equal 'G1'
       Grid.prev( 'G5', :across ).must_equal 'G4'
       Grid.prev( 'G10', :across ).must_equal 'G9'
     end
 
-    it 'should move to the prev row' do
+    it 'should move to the prev row in the middle' do
       Grid.prev( 'B5', :down ).must_equal 'A5'
       Grid.prev( 'D5', :down ).must_equal 'C5'
       Grid.prev( 'J5', :down ).must_equal 'I5'
@@ -148,7 +148,7 @@ describe Grid do
   end
 
   describe '#Grid.neighbours' do
-    it 'should return all the neighbours for a middle location' do
+    it 'should return all four neighbours for a middle location' do
       Grid.neighbours( 'B5' ).must_equal %w(B4 B6 A5 C5)
     end
 

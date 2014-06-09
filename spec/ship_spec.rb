@@ -3,12 +3,12 @@ require 'minitest/pride'
 
 require './shiptypes'
 
-# Ship is not designed to be instantiated
+# Ship is not designed to be instantiated as itself
 
 describe Ship do
   let( :grid ) { Grid.new :visible }
 
-  describe '#initialise' do
+  describe '#initialize' do
     it 'should be initializable with a random position' do
       Ship.new( grid, nil, 5 )
     end
@@ -22,9 +22,9 @@ describe Ship do
     end
   end
 
-  describe '#name' do
-    it 'should return its name' do
-      Ship.new( grid, nil, 5 ).name.must_equal 'Ship'
+  describe '#type' do
+    it 'should return its type' do
+      Ship.new( grid, nil, 5 ).type.must_equal 'Ship'
     end
   end
 
@@ -32,14 +32,14 @@ describe Ship do
     it 'should return the grid positions the ship occupies' do
       poses = %w(A1 A2 A3 A4)
 
-      bs = Battleship.new( grid, poses )
+      bs = Ship.new( grid, poses, 4 )
       bs.parts.must_equal poses
     end
   end
 
   describe 'Ship#insert_into' do
-    it 'should put the battleship into the grid somewhere' do
-      bs = Battleship.new( grid )
+    it 'should put the ship into the grid somewhere' do
+      bs = Ship.new( grid, nil, 4 )
 
       bs.parts.each { |pos| grid.cell_at( pos ).state.must_equal :occupied }
     end
@@ -47,7 +47,7 @@ describe Ship do
 
   describe 'Ship#sunk?' do
     it 'should return false if any part is not hit' do
-      bs   = Battleship.new( grid )
+      bs   = Ship.new( grid, nil, 4 )
       most = bs.parts[1..-1]
 
       most.each do |pos|
@@ -57,7 +57,7 @@ describe Ship do
     end
 
     it 'should not return true if any part is not hit' do
-      bs  = Battleship.new( grid )
+      bs  = Ship.new( grid, nil, 4 )
 
       bs.parts.each { |pos| grid.attack( pos ) }
 
@@ -83,9 +83,9 @@ describe AircraftCarrier do
     end
   end
 
-  describe '#name' do
-    it 'should return its name' do
-      AircraftCarrier.new( grid ).name.must_equal 'Aircraft Carrier'
+  describe '#type' do
+    it 'should return its type' do
+      AircraftCarrier.new( grid ).type.must_equal 'Aircraft Carrier'
     end
   end
 end
@@ -107,9 +107,9 @@ describe Battleship do
     end
   end
 
-  describe '#name' do
-    it 'should return its name' do
-      Battleship.new( grid ).name.must_equal 'Battleship'
+  describe '#type' do
+    it 'should return its type' do
+      Battleship.new( grid ).type.must_equal 'Battleship'
     end
   end
 end
@@ -131,9 +131,9 @@ describe Cruiser do
     end
   end
 
-  describe '#name' do
-    it 'should return its name' do
-      Cruiser.new( grid ).name.must_equal 'Cruiser'
+  describe '#type' do
+    it 'should return its type' do
+      Cruiser.new( grid ).type.must_equal 'Cruiser'
     end
   end
 end
@@ -155,9 +155,9 @@ describe Destroyer do
     end
   end
 
-  describe '#name' do
-    it 'should return its name' do
-      Destroyer.new( grid ).name.must_equal 'Destroyer'
+  describe '#type' do
+    it 'should return its type' do
+      Destroyer.new( grid ).type.must_equal 'Destroyer'
     end
   end
 end
@@ -179,9 +179,9 @@ describe Submarine do
     end
   end
 
-  describe '#name' do
-    it 'should return its name' do
-      Submarine.new( grid ).name.must_equal 'Submarine'
+  describe '#type' do
+    it 'should return its type' do
+      Submarine.new( grid ).type.must_equal 'Submarine'
     end
   end
 end
