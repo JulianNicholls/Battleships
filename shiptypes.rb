@@ -1,50 +1,52 @@
 require './ship'
 
-# Aircraft Carrier
-class AircraftCarrier < Ship
-  LENGTH = 5
+module Battleships
+  # Aircraft Carrier
+  class AircraftCarrier < Ship
+    LENGTH = 5
 
-  def initialize( grid, positions = nil )
-    super( grid, positions, LENGTH )
+    def initialize( grid, positions = nil )
+      super( grid, positions, LENGTH )
+    end
+
+    def type
+      'Aircraft Carrier'
+    end
   end
 
-  def type
-    'Aircraft Carrier'
+  # Battleship
+  class Battleship < Ship
+    LENGTH = 4
+
+    def initialize( grid, positions = nil )
+      super( grid, positions, LENGTH )
+    end
   end
-end
 
-# Battleship
-class Battleship < Ship
-  LENGTH = 4
+  # Cruiser
+  class Cruiser < Ship
+    LENGTH = 3
 
-  def initialize( grid, positions = nil )
-    super( grid, positions, LENGTH )
+    def initialize( grid, positions = nil )
+      super( grid, positions, LENGTH )
+    end
   end
-end
 
-# Cruiser
-class Cruiser < Ship
-  LENGTH = 3
+  # Destroyer
+  class Destroyer < Ship
+    LENGTH = 2
 
-  def initialize( grid, positions = nil )
-    super( grid, positions, LENGTH )
+    def initialize( grid, positions = nil )
+      super( grid, positions, LENGTH )
+    end
   end
-end
 
-# Destroyer
-class Destroyer < Ship
-  LENGTH = 2
+  # Submarine
+  class Submarine < Ship
+    LENGTH = 1
 
-  def initialize( grid, positions = nil )
-    super( grid, positions, LENGTH )
-  end
-end
-
-# Submarine
-class Submarine < Ship
-  LENGTH = 1
-
-  def initialize( grid, positions = nil )
-    super( grid, positions, LENGTH )
+    def initialize( grid, positions = nil )
+      super( grid, positions, LENGTH )
+    end
   end
 end

@@ -1,11 +1,15 @@
 #! /usr/bin/env ruby -I.
 
+require 'term/ansicolor'
+
 require 'grid'
 require 'shiptypes'
 
 module Battleships
   # Text version of Battleships
   class Game
+    include Term::ANSIColor
+
     SHIPS = [AircraftCarrier, Battleship, Cruiser,
              Destroyer, Destroyer, Submarine, Submarine]
 
@@ -20,7 +24,7 @@ module Battleships
       lefts  = @computer_grid.to_s( :headers ).lines
       rights = @player_grid.to_s( :headers ).lines
 
-      puts "\n        Computer                      Player"
+      puts bright_cyan, "\n        Computer                      Player", bright_white
       lefts.each_with_index do |left, idx|
         puts "#{left.chomp}      #{rights[idx].chomp}"
       end
@@ -34,7 +38,7 @@ module Battleships
     end
 
     def player_play
-      print "\nLocation: "
+      print bright_white, "\nLocation: "
       loc = STDIN.gets.chomp
       puts @computer_grid.attack( loc ) ? 'HIT!' : 'You Missed'
       check_sunk
@@ -54,7 +58,7 @@ module Battleships
         next unless ship.sunk?
 
         @computer_ships_sunk << ship
-        puts "You sunk a #{ship.name}"
+        puts "You sunk a #{ship.type}"
       end
     end
   end

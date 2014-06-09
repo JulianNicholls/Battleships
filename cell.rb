@@ -1,40 +1,47 @@
 # One cell in the grid
-class Cell
-  CHARS = { empty: ' ', occupied: '+', hit: '*', miss: 'X' }
 
-  attr_reader :state
-  attr_accessor :visible
+require 'term/ansicolor'
 
-  def initialize( state = :empty, visible = false )
-    @state, @visible = state, visible
-  end
+module Battleships
+  class Cell
+    include Term::ANSIColor
+    
+    CHARS = { empty: ' ', occupied: '+', hit: '*', miss: 'X' }
 
-  def attack
-    show
-    return false if state == :hit || state == :miss
+    attr_reader :state
+    attr_accessor :visible
 
-    @state = state == :occupied ? :hit : :miss
+    def initialize( state = :empty, visible = false )
+      @state, @visible = state, visible
+    end
 
-    state == :hit
-  end
+    def attack
+      show
+      return false if state == :hit || state == :miss
 
-  def hide
-    self.visible = false
-  end
+      @state = state == :occupied ? :hit : :miss
 
-  def show
-    self.visible = true
-  end
+      state == :hit
+    end
 
-  def shape
-    visible ? CHARS[state] : ' '
-  end
+    def hide
+      self.visible = false
+    end
 
-  def set
-    @state = :occupied
-  end
+    def show
+      self.visible = true
+    end
 
-  def empty?
-    state == :empty || state == :miss
+    def shape
+      visible ? CHARS[state] : ' '
+    end
+
+    def set
+      @state = :occupied
+    end
+
+    def empty?
+      state == :empty || state == :miss
+    end
   end
 end
