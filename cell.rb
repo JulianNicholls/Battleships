@@ -5,8 +5,6 @@ module Battleships
   class Cell
     include Term::ANSIColor
 
-    CHARS = { empty: ' ', occupied: '+', hit: '*', miss: 'X' }
-
     attr_reader :state
     attr_accessor :visible
 
@@ -32,7 +30,9 @@ module Battleships
     end
 
     def shape
-      visible ? CHARS[state] : ' '
+      shapes = { empty: ' ', occupied: cyan + '+', hit: red + '*', miss: green + 'X' }
+
+      visible ? bold + shapes[state] + white : ' '
     end
 
     def set

@@ -108,24 +108,24 @@ describe Battleships::Cell do
 
       occ.attack
       occ.shape.wont_equal ' '   # Always visible once attacked
-      occ.shape.must_equal '*'
+      occ.shape.must_match /\*/
     end
 
     it "should return '+' for occupied and visible" do
       occ = Battleships::Cell.new( :occupied, :visible )
-      occ.shape.must_equal '+'
+      occ.shape.must_match /\+/
     end
 
     it "should return 'X' for miss" do
       occ = Battleships::Cell.new( :empty )
       occ.attack
-      occ.shape.must_equal 'X'
+      occ.shape.must_match /X/
     end
 
     it "should return '*' for hit" do
       occ = Battleships::Cell.new( :occupied )
       occ.attack
-      occ.shape.must_equal '*'
+      occ.shape.must_match /\*/
     end
   end
 
