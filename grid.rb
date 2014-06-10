@@ -6,7 +6,9 @@ module Battleships
     ROWS = 'ABCDEFGHIJ'
 
     def self.next( pos, direction )
-      mdata = /([A-L])(\d{1,2})/.match pos
+      mdata = /\A([A-J])(10|[1-9])\z/.match pos.upcase
+
+      return nil if mdata.nil?
 
       if direction == :across
         return nil if mdata[2].to_i == 10
@@ -18,10 +20,12 @@ module Battleships
     end
 
     def self.prev( pos, direction )
-      mdata = /([A-L])(\d{1,2})/.match pos
+      mdata = /\A([A-J])(10|[1-9])\z/.match pos.upcase
+
+      return nil if mdata.nil?
 
       if direction == :across
-        return nil if mdata[2].to_i == 1
+        return nil if mdata[2].to_i <= 1
         mdata[1] + (mdata[2].to_i - 1).to_s
       else
         return nil if mdata[1] == ROWS[0]
@@ -31,10 +35,8 @@ module Battleships
     end
 
     def self.neighbours( pos )
-      neighs = []
-
       nnext = Grid.prev( pos, :across )
-      neighs << nnext unless nnext.nil?
+      neighs = nnext.nil? ? [] : [nnext]
 
       nnext = Grid.next( pos, :across )
       neighs << nnext unless nnext.nil?

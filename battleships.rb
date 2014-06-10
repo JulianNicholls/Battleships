@@ -24,7 +24,7 @@ module Battleships
       lefts  = @computer_grid.to_s( :headers ).lines
       rights = @player_grid.to_s( :headers ).lines
 
-      puts bright_cyan, "\n        Computer                      Player", bright_white
+      puts bright_cyan, "\n        Computer                      Player", white
       lefts.each_with_index do |left, idx|
         puts "#{left.chomp}      #{rights[idx].chomp}"
       end

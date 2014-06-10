@@ -124,9 +124,20 @@ describe Battleships::Grid do
       Battleships::Grid.next( 'I5', :down ).must_equal 'J5'
     end
 
+    it 'should accept lower-case' do
+      Battleships::Grid.next( 'g9', :across ).must_equal 'G10'
+      Battleships::Grid.next( 'i5', :down ).must_equal 'J5'
+    end
+
     it 'should return nil if there is no next' do
-      Battleships::Grid.next( 'G10', :across ).must_equal nil
-      Battleships::Grid.next( 'J3', :down ).must_equal nil
+      Battleships::Grid.next( 'G10', :across ).must_be_nil
+      Battleships::Grid.next( 'J3', :down ).must_be_nil
+    end
+
+    it 'should reject bad locations' do
+      Battleships::Grid.next( 'A11', :down ).must_be_nil
+      Battleships::Grid.next( 'A0', :down ).must_be_nil
+      Battleships::Grid.next( 'K1', :across ).must_be_nil
     end
   end
 
@@ -143,9 +154,20 @@ describe Battleships::Grid do
       Battleships::Grid.prev( 'J5', :down ).must_equal 'I5'
     end
 
+    it 'should accept lower-case' do
+      Battleships::Grid.prev( 'g10', :across ).must_equal 'G9'
+      Battleships::Grid.prev( 'j5', :down ).must_equal 'I5'
+    end
+
     it 'should return nil if there is no prev' do
-      Battleships::Grid.prev( 'G1', :across ).must_equal nil
-      Battleships::Grid.prev( 'A3', :down ).must_equal nil
+      Battleships::Grid.prev( 'G1', :across ).must_be_nil
+      Battleships::Grid.prev( 'A3', :down ).must_be_nil
+    end
+
+    it 'should reject bad locations' do
+      Battleships::Grid.prev( 'A11', :down ).must_be_nil
+      Battleships::Grid.prev( 'A0', :down ).must_be_nil
+      Battleships::Grid.prev( 'K1', :across ).must_be_nil
     end
   end
 

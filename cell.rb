@@ -1,11 +1,10 @@
-# One cell in the grid
-
 require 'term/ansicolor'
 
 module Battleships
+  # One cell in the grid
   class Cell
     include Term::ANSIColor
-    
+
     CHARS = { empty: ' ', occupied: '+', hit: '*', miss: 'X' }
 
     attr_reader :state

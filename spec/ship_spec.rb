@@ -18,7 +18,7 @@ describe Battleships::Ship do
     end
 
     it 'should throw an error if the position list is the wrong size' do
-      proc { Battleships::Ship.new( grid, %w(A1 A2 A3 A4), 3 ) }.must_raise RuntimeError
+      proc { Battleships::Ship.new( grid, %w(A1 A2), 3 ) }.must_raise RuntimeError
     end
   end
 
@@ -79,7 +79,9 @@ describe Battleships::AircraftCarrier do
     end
 
     it 'should throw an error if the position list is the wrong size' do
-      proc { Battleships::AircraftCarrier.new( grid, %w(A1 A2 A3 A4) ) }.must_raise RuntimeError
+      proc do
+        Battleships::AircraftCarrier.new( grid, %w(A1 A2 A3 A4) )
+      end.must_raise RuntimeError
     end
   end
 
@@ -103,7 +105,9 @@ describe Battleships::Battleship do
     end
 
     it 'should throw an error if the position list is the wrong size' do
-      proc { Battleships::Battleship.new( grid, %w(A1 A2 A3) ) }.must_raise RuntimeError
+      proc do
+        Battleships::Battleship.new( grid, %w(A1 A2 A3) )
+      end.must_raise RuntimeError
     end
   end
 
@@ -127,7 +131,9 @@ describe Battleships::Cruiser do
     end
 
     it 'should throw an error if the position list is the wrong size' do
-      proc { Battleships::Cruiser.new( grid, %w(A1 A2 A3 A4) ) }.must_raise RuntimeError
+      proc do
+        Battleships::Cruiser.new( grid, %w(A1 A2 A3 A4) )
+      end.must_raise RuntimeError
     end
   end
 
@@ -151,7 +157,9 @@ describe Battleships::Destroyer do
     end
 
     it 'should throw an error if the position list is the wrong size' do
-      proc { Battleships::Destroyer.new( grid, %w(A1 A2 A3) ) }.must_raise RuntimeError
+      proc do
+        Battleships::Destroyer.new( grid, %w(A1 A2 A3) )
+      end.must_raise RuntimeError
     end
   end
 
