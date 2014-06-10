@@ -30,7 +30,12 @@ module Battleships
     end
 
     def shape
-      shapes = { empty: ' ', occupied: cyan + '+', hit: red + '*', miss: green + 'X' }
+      shapes = {
+        empty:    ' ',
+        occupied: cyan + '+',
+        hit:      red + '*',
+        miss:     green + 'X'
+      }
 
       visible ? bold + shapes[state] + white : ' '
     end

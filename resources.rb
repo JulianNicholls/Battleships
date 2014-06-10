@@ -8,7 +8,6 @@ module Battleships
     end
 
     def fonts( filename = 'media/good_times_rg.ttf' )
-
       return load_font( filename ) if File.readable? filename
 
       {
