@@ -23,9 +23,9 @@ module Battleships
     WIDTH         = PLAYER_GRID.x + GRID_WIDTH + 3 * MARGIN
     HEIGHT        = 480
 
-    BLACK         = Gosu::Color.new( 0xff000000 )
-    BORDER        = Gosu::Color.new( 0xffcc0000 )
-    HEADER_TEXT   = Gosu::Color.new( 0xffdddd00 )
+    BACKGROUND    = Gosu::Color.new( 0xff000060 )
+    BORDER        = Gosu::Color.new( 0xff000050 )
+    HEADER_TEXT   = Gosu::Color.new( 0xffeeee00 )
     GRID_LINE     = Gosu::Color.new( 0xc0b0b0b0 )
   end
 end

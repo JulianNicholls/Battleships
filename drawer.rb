@@ -20,7 +20,7 @@ module Battleships
 
       origin.move_by!( MARGIN, 2 * MARGIN + HEADER_HEIGHT )
       size.deflate!( 2 * MARGIN, 3 * MARGIN + HEADER_HEIGHT )
-      @window.draw_rectangle( origin, size, 0, BLACK )
+      @window.draw_rectangle( origin, size, 0, BACKGROUND )
 
       @window.image[:waves1].draw( COMPUTER_GRID.x, COMPUTER_GRID.y, 1 )
       @window.image[:waves2].draw( PLAYER_GRID.x, PLAYER_GRID.y, 1 )
@@ -51,6 +51,53 @@ module Battleships
     def grids
       lines( COMPUTER_GRID )
       lines( PLAYER_GRID )
+      
+      @window.image[:ship][0].draw( COMPUTER_GRID.x, COMPUTER_GRID.y, 3 )
+      @window.image[:ship][1].draw( COMPUTER_GRID.x + 30, COMPUTER_GRID.y, 3 )
+      @window.image[:ship][2].draw( COMPUTER_GRID.x + 60, COMPUTER_GRID.y, 3 )
+      @window.image[:ship][3].draw( COMPUTER_GRID.x + 90, COMPUTER_GRID.y, 3 )
+      @window.image[:ship][4].draw( COMPUTER_GRID.x + 120, COMPUTER_GRID.y, 3 )
+
+      @window.image[:ship][0].draw( COMPUTER_GRID.x, COMPUTER_GRID.y + 60, 3 )
+      @window.image[:ship][1].draw( COMPUTER_GRID.x + 30, COMPUTER_GRID.y + 60, 3 )
+      @window.image[:ship][2].draw( COMPUTER_GRID.x + 60, COMPUTER_GRID.y + 60, 3 )
+      @window.image[:ship][4].draw( COMPUTER_GRID.x + 90, COMPUTER_GRID.y + 60, 3 )
+
+      @window.image[:ship][0].draw( COMPUTER_GRID.x, COMPUTER_GRID.y + 120, 3 )
+      @window.image[:ship][2].draw( COMPUTER_GRID.x + 30, COMPUTER_GRID.y + 120, 3 )
+      @window.image[:ship][4].draw( COMPUTER_GRID.x + 60, COMPUTER_GRID.y + 120, 3 )
+
+      @window.image[:ship][0].draw( COMPUTER_GRID.x, COMPUTER_GRID.y + 180, 3 )
+      @window.image[:ship][4].draw( COMPUTER_GRID.x + 30, COMPUTER_GRID.y + 180, 3 )
+
+      @window.image[:ship][5].draw( COMPUTER_GRID.x + 60, COMPUTER_GRID.y + 180, 3 )
+      
+      @window.image[:ship][6].draw( COMPUTER_GRID.x + 180, COMPUTER_GRID.y, 3 )
+      @window.image[:ship][7].draw( COMPUTER_GRID.x + 180, COMPUTER_GRID.y + 30, 3 )
+      @window.image[:ship][8].draw( COMPUTER_GRID.x + 180, COMPUTER_GRID.y + 60, 3 )
+      @window.image[:ship][9].draw( COMPUTER_GRID.x + 180, COMPUTER_GRID.y + 90, 3 )
+      @window.image[:ship][10].draw( COMPUTER_GRID.x + 180, COMPUTER_GRID.y + 120, 3 )
+
+      @window.image[:ship][6].draw( COMPUTER_GRID.x + 240, COMPUTER_GRID.y, 3 )
+      @window.image[:ship][7].draw( COMPUTER_GRID.x + 240, COMPUTER_GRID.y + 30, 3 )
+      @window.image[:ship][8].draw( COMPUTER_GRID.x + 240, COMPUTER_GRID.y + 60, 3 )
+      @window.image[:ship][10].draw( COMPUTER_GRID.x + 240, COMPUTER_GRID.y + 90, 3 )
+
+      @window.image[:ship][6].draw( COMPUTER_GRID.x + 120, COMPUTER_GRID.y + 120, 3 )
+      @window.image[:ship][8].draw( COMPUTER_GRID.x + 120, COMPUTER_GRID.y + 150, 3 )
+      @window.image[:ship][10].draw( COMPUTER_GRID.x + 120, COMPUTER_GRID.y + 180, 3 )
+
+      @window.image[:ship][6].draw( COMPUTER_GRID.x + 180, COMPUTER_GRID.y + 180, 3 )
+      @window.image[:ship][10].draw( COMPUTER_GRID.x + 180, COMPUTER_GRID.y + 210, 3 )
+
+      @window.image[:ship][11].draw( COMPUTER_GRID.x + 30, COMPUTER_GRID.y + 240, 3 )
+      
+      left = 20
+      
+      @window.image[:ship].each do |part|
+        part.draw( left, 420, 3 )
+        left += 33
+      end
     end
 
     def lines( tlc_pos )

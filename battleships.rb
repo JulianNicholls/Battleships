@@ -9,6 +9,12 @@ module Battleships
   class Game < Gosu::Window
     include Constants
 
+    KEY_FUNCS = {
+      Gosu::KbEscape =>  -> { close },
+
+      Gosu::MsLeft   =>  -> { @position = Point.new( mouse_x, mouse_y ) }
+    }
+    
     attr_reader :font, :image
 
     def initialize
@@ -18,6 +24,7 @@ module Battleships
       load_resources
 
       @drawer = Drawer.new( self )
+      @phase  = :placement
     end
 
     def needs_cursor?   # Enable the mouse cursor
@@ -35,7 +42,7 @@ module Battleships
     end
 
     def button_down( btn_id )
-      close if btn_id == Gosu::KbEscape
+      instance_exec( &KEY_FUNCS[btn_id] ) if KEY_FUNCS.key? btn_id
     end
 
     private
