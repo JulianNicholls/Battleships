@@ -19,5 +19,9 @@ module Battleships
     def sunk?
       parts.all? { |pos| @grid.cell_at( pos ).state == :hit }
     end
+    
+    def at?( pos )
+      parts.include? pos
+    end
   end
 end

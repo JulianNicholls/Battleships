@@ -11,23 +11,19 @@ module Battleships
     let( :grid ) { Grid.new :visible }
 
     describe '#initialize' do
+      it 'should be default initializable' do
+        Ship.new( grid )
+      end
+      
       it 'should not be initializable on its own' do
-#        proc { Ship.new( grid ) }.must_raise RuntimeError
         proc { Ship.new( grid, %w(A1 A2) ) }.must_raise RuntimeError
       end
     end
 
-  #  describe 'Ship#insert_into' do
-  #    it 'should put the ship into the grid somewhere' do
-  #      bs = Ship.new( grid, nil, 4 )
-  #
-  #      bs.parts.each { |pos| grid.cell_at( pos ).state.must_equal :occupied }
-  #    end
-  #  end
-
     describe 'Ship#sunk?' do
       it 'should return false if any part is not hit' do
         bs   = Battleship.new( grid )
+        grid.add_ship( bs )
         most = bs.parts[1..-1]
   
         most.each do |pos|
@@ -38,10 +34,29 @@ module Battleships
   
       it 'should return true if all parts have been hit' do
         bs  = Battleship.new( grid )
+        grid.add_ship( bs )
   
         bs.parts.each { |pos| grid.attack( pos ) }
   
         bs.sunk?.must_equal true
+      end
+      
+      describe '#at?' do
+        it 'shoud return false for a location that is not part of it' do
+          poses = %w(A1 A2 A3 A4)
+          bs    = Battleship.new( grid, poses )
+          grid.add_ship( bs )
+          
+          bs.at?( 'A5' ).must_equal false
+        end
+
+        it 'shoud return tryue for a location that is part of it' do
+          poses = %w(A1 A2 A3 A4)
+          bs    = Battleship.new( grid, poses )
+          grid.add_ship( bs )
+          
+          poses.each { |pos| bs.at?( pos ).must_equal true }
+        end
       end
     end
   end
@@ -50,7 +65,7 @@ module Battleships
     let( :grid ) { Grid.new }
 
     describe '#initialize' do
-      it 'should be initializable with a random position' do
+      it 'should be initializable with no position' do
         AircraftCarrier.new( grid )
       end
 
@@ -91,7 +106,7 @@ module Battleships
     let( :grid ) { Grid.new :visible }
 
     describe '#initialize' do
-      it 'should be initializable with a random position' do
+      it 'should be initializable with no position' do
         Battleship.new( grid )
       end
 
@@ -132,7 +147,7 @@ module Battleships
     let( :grid ) { Grid.new :visible }
 
     describe '#initialize' do
-      it 'should be initializable with a random position' do
+      it 'should be initializable with no position' do
         Cruiser.new( grid )
       end
 
@@ -173,7 +188,7 @@ module Battleships
     let( :grid ) { Grid.new :visible }
 
     describe '#initialize' do
-      it 'should be initializable with a random position' do
+      it 'should be initializable with no position' do
         Destroyer.new( grid )
       end
 
@@ -214,7 +229,7 @@ module Battleships
     let( :grid ) { Grid.new :visible }
 
     describe '#initialize' do
-      it 'should be initializable with a random position' do
+      it 'should be initializable with no position' do
         Submarine.new( grid )
       end
 
