@@ -17,6 +17,9 @@ module Battleships
       @computer_grid = Grid.new    # ( :visible )  # for now
       @player_grid   = Grid.new( :visible )
 
+      @player_ships_sunk   = []
+      @computer_ships_sunk = []
+
       fill_computer
     end
 
@@ -31,10 +34,7 @@ module Battleships
     end
 
     def fill_user # temporary
-      @player_ships = []
-      @player_ships_sunk = []
-
-      SHIPS.each { |ship| @player_ships << ship.new( @player_grid ) }
+      SHIPS.each { |ship| @player_grid.add_ship ship.new( @player_grid ) }
     end
 
     def player_play
@@ -47,14 +47,11 @@ module Battleships
     private
 
     def fill_computer
-      @computer_ships = []
-      @computer_ships_sunk = []
-
-      SHIPS.each { |ship| @computer_ships << ship.new( @computer_grid ) }
+      SHIPS.each { |ship| @computer_grid.add_ship ship.new( @computer_grid ) }
     end
 
     def check_sunk
-      (@computer_ships - @computer_ships_sunk).each do |ship|
+      (@computer_grid.ships - @computer_ships_sunk).each do |ship|
         next unless ship.sunk?
 
         @computer_ships_sunk << ship

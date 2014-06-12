@@ -42,7 +42,7 @@ module Battleships
       end
       
       describe '#at?' do
-        it 'shoud return false for a location that is not part of it' do
+        it 'should return false for a location that is not part of it' do
           poses = %w(A1 A2 A3 A4)
           bs    = Battleship.new( grid, poses )
           grid.add_ship( bs )
@@ -50,7 +50,7 @@ module Battleships
           bs.at?( 'A5' ).must_equal false
         end
 
-        it 'shoud return tryue for a location that is part of it' do
+        it 'should return true for a location that is part of it' do
           poses = %w(A1 A2 A3 A4)
           bs    = Battleship.new( grid, poses )
           grid.add_ship( bs )
