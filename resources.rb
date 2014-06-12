@@ -22,7 +22,7 @@ module Battleships
       {
         waves1: Gosu::Image.new( @window, 'media/waves1.png', true ),
         waves2: Gosu::Image.new( @window, 'media/waves2.png', true ),
-        ship:   Gosu::Image.load_tiles( @window, 'media/Ship.png', 30, 30, true ) 
+        ship:   Gosu::Image.load_tiles( @window, 'media/Ship.png', 30, 30, true )
       }
     end
 

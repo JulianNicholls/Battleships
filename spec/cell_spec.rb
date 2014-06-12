@@ -3,6 +3,7 @@ require 'minitest/pride'
 
 require './cell'
 
+# Battleships module
 module Battleships
   describe Cell do
     describe '#initialize' do

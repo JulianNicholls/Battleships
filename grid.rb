@@ -1,66 +1,22 @@
 require './cell'
+require './gridpos'
 
 module Battleships
   # Grid
   class Grid
     ROWS = 'ABCDEFGHIJ'
-    
+
     attr_reader :ships
-
-    def self.next( pos, direction )
-      mdata = /\A([A-J])(10|[1-9])\z/.match pos.upcase
-
-      return nil if mdata.nil?
-
-      if direction == :across
-        return nil if mdata[2].to_i == 10
-        mdata[1] + (mdata[2].to_i + 1).to_s
-      else
-        return nil if mdata[1] == ROWS[-1]
-        mdata[1].next + mdata[2]
-      end
-    end
-
-    def self.prev( pos, direction )
-      mdata = /\A([A-J])(10|[1-9])\z/.match pos.upcase
-
-      return nil if mdata.nil?
-
-      if direction == :across
-        return nil if mdata[2].to_i <= 1
-        mdata[1] + (mdata[2].to_i - 1).to_s
-      else
-        return nil if mdata[1] == ROWS[0]
-        row = ROWS[ROWS.index( mdata[1] ) - 1]
-        row + mdata[2]
-      end
-    end
-
-    def self.neighbours( pos )
-      nnext = Grid.prev( pos, :across )
-      neighs = nnext.nil? ? [] : [nnext]
-
-      nnext = Grid.next( pos, :across )
-      neighs << nnext unless nnext.nil?
-
-      nnext = Grid.prev( pos, :down )
-      neighs << nnext unless nnext.nil?
-
-      nnext = Grid.next( pos, :down )
-      neighs << nnext unless nnext.nil?
-
-      neighs
-    end
 
     def initialize( visible = false, width = 10, height = 10 )
       @width, @height = width, height
       @grid  = empty_grid( width, height, visible )
       @ships = []
     end
-    
+
     def add_ship( ship )
       @ships << ship
-      
+
       if ship.parts.empty?
         insert( ship )
       else
@@ -151,7 +107,7 @@ module Battleships
 
         poses << cur
         return poses if poses.size == length
-        cur = Grid.next( cur, dir )
+        cur = GridPos.next( cur, dir )
       end
 
       nil
@@ -160,7 +116,7 @@ module Battleships
     def isolated?( pos )
       return false unless cell_at( pos ).empty?
 
-      Grid.neighbours( pos ).all? { |loc| cell_at( loc ).empty? }
+      GridPos.neighbours( pos ).all? { |loc| cell_at( loc ).empty? }
     end
 
     def top_header

@@ -51,19 +51,9 @@ module Battleships
     def grids
       lines( COMPUTER_GRID )
       lines( PLAYER_GRID )
-      
-      @window.image[:ship][0].draw( COMPUTER_GRID.x, COMPUTER_GRID.y, 3 )
-      @window.image[:ship][1].draw( COMPUTER_GRID.x + 30, COMPUTER_GRID.y, 3 )
-      @window.image[:ship][2].draw( COMPUTER_GRID.x + 60, COMPUTER_GRID.y, 3 )
-      @window.image[:ship][3].draw( COMPUTER_GRID.x + 90, COMPUTER_GRID.y, 3 )
-      @window.image[:ship][4].draw( COMPUTER_GRID.x + 120, COMPUTER_GRID.y, 3 )
 
-      @window.image[:ship][12].draw( COMPUTER_GRID.x, COMPUTER_GRID.y + 30, 4 )
-
-      @window.image[:ship][13].draw( COMPUTER_GRID.x, COMPUTER_GRID.y, 4 )
-      
       left = 20
-      
+
       @window.image[:ship].each do |part|
         part.draw( left, 420, 3 )
         left += 33

@@ -14,7 +14,7 @@ module Battleships
 
       Gosu::MsLeft   =>  -> { @position = Point.new( mouse_x, mouse_y ) }
     }
-    
+
     attr_reader :font, :image
 
     def initialize
