@@ -14,7 +14,7 @@ module Battleships
 
     def attack
       show
-      return false if state == :hit || state == :miss
+      return false if [:hit, :miss].include? state
 
       @state = state == :occupied ? :hit : :miss
 

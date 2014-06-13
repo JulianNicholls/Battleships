@@ -28,14 +28,14 @@ module Battleships
       letter.upcase!
 
       if letter.size > 1
-        row = letter[0].ord - 'A'.ord
-        col = letter[1..-1].to_i - 1
+        row = ROWS.index letter[0]
+        col = letter[1..-1].to_i
       else
-        row = letter.ord - 'A'.ord
-        col = number.to_i - 1
+        row = ROWS.index letter
+        col = number.to_i
       end
 
-      @grid[row * @width + col]
+      @grid[row * @width + col - 1]
     end
 
     def to_s( headers = false )
@@ -74,8 +74,7 @@ module Battleships
 
     def insert( ship )
       length = ship.length
-      fail 'Cannot insert a zero-length ship' if ship.length == 0
-      poses = []
+      poses  = []
 
       loop do
         dir, cur = random_start_point( length )
@@ -122,7 +121,7 @@ module Battleships
     def top_header
       str = '  '
       (1..10).each { |n| str << format( '%-2d', n ) }
-      str + "\n"
+      "#{str}\n"
     end
   end
 end
