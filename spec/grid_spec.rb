@@ -159,5 +159,31 @@ module Battleships
         grid.cell_at( 'D5' ).shape.must_match( /X/ )
       end
     end
+    
+    describe '#ship_at' do
+      it "should return nil if there is no ship at the location" do
+        grid  = Grid.new
+        poses = %w(A1 A2 A3 A4)
+        bs    = Battleship.new( grid, poses )
+        grid.add_ship( bs )
+
+        grid.ship_at( 'A5' ).must_be_nil
+      end
+
+      it "should return the ship at the location" do
+        grid  = Grid.new
+        poses1= %w(A1 A2 A3 A4)
+        bs1   = Battleship.new( grid, poses1 )
+
+        poses2= %w(C1 C2 C3 C4)
+        bs2   = Battleship.new( grid, poses2 )
+        
+        grid.add_ship( bs1 )
+        grid.add_ship( bs2 )
+
+        grid.ship_at( 'A2' ).must_equal bs1
+        grid.ship_at( 'C3' ).must_equal bs2
+      end
+    end
   end
 end

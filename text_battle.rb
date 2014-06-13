@@ -40,8 +40,12 @@ module Battleships
     def player_play
       print bright_white, "\nLocation: "
       loc = STDIN.gets.chomp
-      puts @computer_grid.attack( loc ) ? 'HIT!' : 'You Missed'
-      check_sunk
+      if @computer_grid.attack( loc ) 
+        puts 'HIT!'
+        check_sunk( loc )
+      else
+        puts 'You Missed'
+      end
     end
 
     private
@@ -50,10 +54,10 @@ module Battleships
       SHIPS.each { |ship| @computer_grid.add_ship ship.new( @computer_grid ) }
     end
 
-    def check_sunk
-      (@computer_grid.ships - @computer_ships_sunk).each do |ship|
-        next unless ship.sunk?
-
+    def check_sunk( loc )
+      ship = @computer_grid.ship_at loc
+      
+      if ship.sunk?
         @computer_ships_sunk << ship
         puts "You sunk a #{ship.type}"
       end
