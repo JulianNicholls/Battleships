@@ -5,7 +5,7 @@ require './grid'
 require './shiptypes'
 
 # Battleships module
-module Battleships
+module Battleships                           
   # Ship is not designed to be instantiated as itself
 
   describe Ship do
@@ -101,6 +101,20 @@ module Battleships
         bs.parts.must_equal poses
       end
     end
+    
+    describe '#map' do
+      it 'should return the horizontal list for a horizontal ship' do
+        poses = %w(A1 A2 A3 A4 A5)
+        ac    = AircraftCarrier.new( grid, poses)
+        ac.piece_map.must_equal [0, 1, 2, 3, 4]
+      end
+
+      it 'should return the vertical list for a vertical ship' do
+        poses = %w(A1 B1 C1 D1 E1)
+        ac    = AircraftCarrier.new( grid, poses)
+        ac.piece_map.must_equal [6, 7, 8, 9, 10]
+      end
+    end
   end
 
   describe Battleship do
@@ -140,6 +154,20 @@ module Battleships
 
         bs = Battleship.new( grid, poses )
         bs.parts.must_equal poses
+      end
+    end
+    
+    describe '#map' do
+      it 'should return the horizontal list for a horizontal ship' do
+        poses = %w(A1 A2 A3 A4)
+        ac    = Battleship.new( grid, poses)
+        ac.piece_map.must_equal [0, 1, 2, 4]
+      end
+
+      it 'should return the vertical list for a vertical ship' do
+        poses = %w(B1 C1 D1 E1)
+        ac    = Battleship.new( grid, poses)
+        ac.piece_map.must_equal [6, 7, 8, 10]
       end
     end
   end
@@ -183,6 +211,20 @@ module Battleships
         bs.parts.must_equal poses
       end
     end
+    
+    describe '#map' do
+      it 'should return the horizontal list for a horizontal ship' do
+        poses = %w(A2 A3 A4)
+        ac    = Cruiser.new( grid, poses)
+        ac.piece_map.must_equal [0, 2, 4]
+      end
+
+      it 'should return the vertical list for a vertical ship' do
+        poses = %w(C1 D1 E1)
+        ac    = Cruiser.new( grid, poses)
+        ac.piece_map.must_equal [6, 8, 10]
+      end
+    end
   end
 
   describe Destroyer do
@@ -224,6 +266,20 @@ module Battleships
         bs.parts.must_equal poses
       end
     end
+    
+    describe '#map' do
+      it 'should return the horizontal list for a horizontal ship' do
+        poses = %w(A3 A4)
+        ac    = Destroyer.new( grid, poses)
+        ac.piece_map.must_equal [0, 4]
+      end
+
+      it 'should return the vertical list for a vertical ship' do
+        poses = %w(C1 D1)
+        ac    = Destroyer.new( grid, poses)
+        ac.piece_map.must_equal [6, 10]
+      end
+    end
   end
 
   describe Submarine do
@@ -261,6 +317,16 @@ module Battleships
 
         bs = Submarine.new( grid, poses )
         bs.parts.must_equal poses
+      end
+    end
+    
+    describe '#map' do
+      it 'should return one of the two possibilities' do
+        poses = %w(A3)
+        ac    = Submarine.new( grid, poses)
+        map   = ac.piece_map
+        
+        map.must_equal( map == [5] ? [5] : [11] )
       end
     end
   end
