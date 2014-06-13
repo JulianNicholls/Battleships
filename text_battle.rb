@@ -14,7 +14,7 @@ module Battleships
              Destroyer, Destroyer, Submarine, Submarine]
 
     def initialize
-      @computer_grid = Grid.new    # ( :visible )  # for now
+      @computer_grid = Grid.new
       @player_grid   = Grid.new( :visible )
 
       @player_ships_sunk   = []
