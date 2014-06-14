@@ -5,7 +5,7 @@ require './grid'
 require './shiptypes'
 
 # Battleships module
-module Battleships                           
+module Battleships
   # Ship is not designed to be instantiated as itself
 
   describe Ship do
@@ -101,7 +101,7 @@ module Battleships
         bs.parts.must_equal poses
       end
     end
-    
+
     describe '#piece_number' do
       it 'should return the correct numbers for a horizontal ship' do
         poses = %w(A1 A2 A3 A4 A5)
@@ -117,14 +117,14 @@ module Battleships
       it 'should return the correct numbers for a vertical ship' do
         poses = %w(A1 B1 C1 D1 E1)
         ac    = AircraftCarrier.new( grid, poses)
-        
+
         ac.piece_number( 'A1' ).must_equal 6
         ac.piece_number( 'B1' ).must_equal 7
         ac.piece_number( 'C1' ).must_equal 8
         ac.piece_number( 'D1' ).must_equal 9
         ac.piece_number( 'E1' ).must_equal 10
       end
-    end 
+    end
   end
 
   describe Battleship do
@@ -166,7 +166,7 @@ module Battleships
         bs.parts.must_equal poses
       end
     end
-    
+
     describe '#piece_number' do
       it 'should return the correct numbers for a horizontal ship' do
         poses = %w(A1 A2 A3 A4)
@@ -181,13 +181,13 @@ module Battleships
       it 'should return the correct numbers for a vertical ship' do
         poses = %w(B1 C1 D1 E1)
         ac    = Battleship.new( grid, poses)
-        
+
         ac.piece_number( 'B1' ).must_equal 6
         ac.piece_number( 'C1' ).must_equal 7
         ac.piece_number( 'D1' ).must_equal 8
         ac.piece_number( 'E1' ).must_equal 10
       end
-    end 
+    end
   end
 
   describe Cruiser do
@@ -229,7 +229,7 @@ module Battleships
         bs.parts.must_equal poses
       end
     end
-    
+
     describe '#piece_number' do
       it 'should return the correct numbers for a horizontal ship' do
         poses = %w(A2 A3 A4)
@@ -243,7 +243,7 @@ module Battleships
       it 'should return the correct numbers for a vertical ship' do
         poses = %w(C1 D1 E1)
         ac    = Cruiser.new( grid, poses)
-        
+
         ac.piece_number( 'C1' ).must_equal 6
         ac.piece_number( 'D1' ).must_equal 8
         ac.piece_number( 'E1' ).must_equal 10
@@ -290,7 +290,7 @@ module Battleships
         bs.parts.must_equal poses
       end
     end
-    
+
     describe '#piece_number' do
       it 'should return the correct numbers for a horizontal ship' do
         poses = %w(A3 A4)
@@ -303,7 +303,7 @@ module Battleships
       it 'should return the correct numbers for a vertical ship' do
         poses = %w(C1 D1)
         ac    = Destroyer.new( grid, poses)
-        
+
         ac.piece_number( 'C1' ).must_equal 6
         ac.piece_number( 'D1' ).must_equal 10
       end
@@ -347,7 +347,7 @@ module Battleships
         bs.parts.must_equal poses
       end
     end
-    
+
     describe '#piece_number' do
       it 'should return one of the two possibilities' do
         poses = %w(A3)
@@ -355,7 +355,7 @@ module Battleships
         piece = ac.piece_number 'A3'
 
         piece.must_equal( piece == 5 ? 5 : 11 )
-      end      
+      end
     end
   end
 end

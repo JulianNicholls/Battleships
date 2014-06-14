@@ -1,12 +1,13 @@
 require 'minitest/autorun'
 require 'minitest/pride'
 
+require 'gosu_enhanced'
 require './gridpos'
 
 # Battleships module
 module Battleships
   describe GridPos do
-    describe 'GridPos.next' do
+    describe '#next' do
       it 'should move to the next column in the middle' do
         GridPos.next( 'G1', :across ).must_equal 'G2'
         GridPos.next( 'G5', :across ).must_equal 'G6'
@@ -36,7 +37,7 @@ module Battleships
       end
     end
 
-    describe 'GridPos.prev' do
+    describe '#prev' do
       it 'should move to the prev column in the middle' do
         GridPos.prev( 'G2', :across ).must_equal 'G1'
         GridPos.prev( 'G5', :across ).must_equal 'G4'
@@ -66,7 +67,7 @@ module Battleships
       end
     end
 
-    describe '#GridPos.neighbours' do
+    describe '#neighbours' do
       it 'should return all four neighbours for a middle location' do
         GridPos.neighbours( 'B5' ).must_equal %w(B4 B6 A5 C5)
       end
@@ -92,6 +93,48 @@ module Battleships
         GridPos.neighbours( 'A10' ).must_equal %w(A9 B10)
         GridPos.neighbours( 'J1' ).must_equal %w(J2 I1)
         GridPos.neighbours( 'J10' ).must_equal %w(J9 I10)
+      end
+    end
+
+    describe '#pos_from_point' do
+      it 'should return nil for a point outside the grid' do
+        gep = GosuEnhanced::Point
+
+        origin = gep.new( 40.0, 40.0 )
+        GridPos.pos_from_point( origin, gep.new( 15, 45 ) ).must_be_nil
+        GridPos.pos_from_point( origin, gep.new( 350, 45 ) ).must_be_nil
+        GridPos.pos_from_point( origin, gep.new( 45, 15 ) ).must_be_nil
+        GridPos.pos_from_point( origin, gep.new( 45, 350 ) ).must_be_nil
+      end
+
+      it 'should return the corners correctly with a 0, 0 tlc' do
+        gep = GosuEnhanced::Point
+
+        origin = gep.new( 0.0, 0.0 )
+        GridPos.pos_from_point( origin, gep.new( 15, 15 ) ).must_equal 'A1'
+        GridPos.pos_from_point( origin, gep.new( 285, 15 ) ).must_equal 'A10'
+        GridPos.pos_from_point( origin, gep.new( 15, 285 ) ).must_equal 'J1'
+        GridPos.pos_from_point( origin, gep.new( 285, 285 ) ).must_equal 'J10'
+      end
+
+      it 'should return the corners correctly with a different tlc' do
+        gep = GosuEnhanced::Point
+
+        origin = gep.new( 40.0, 100.0 )
+        GridPos.pos_from_point( origin, gep.new( 45, 101 ) ).must_equal 'A1'
+        GridPos.pos_from_point( origin, gep.new( 311, 102 ) ).must_equal 'A10'
+        GridPos.pos_from_point( origin, gep.new( 41, 381 ) ).must_equal 'J1'
+        GridPos.pos_from_point( origin, gep.new( 311, 382 ) ).must_equal 'J10'
+      end
+
+      it 'should return the middle correctly with a different tlc' do
+        gep = GosuEnhanced::Point
+
+        origin = gep.new( 40.0, 40.0 )
+        GridPos.pos_from_point( origin, gep.new( 185, 185 ) ).must_equal 'E5'
+        GridPos.pos_from_point( origin, gep.new( 215, 185 ) ).must_equal 'E6'
+        GridPos.pos_from_point( origin, gep.new( 185, 215 ) ).must_equal 'F5'
+        GridPos.pos_from_point( origin, gep.new( 215, 215 ) ).must_equal 'F6'
       end
     end
   end
