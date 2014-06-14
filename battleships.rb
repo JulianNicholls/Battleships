@@ -14,9 +14,10 @@ module Battleships
              Destroyer, Destroyer, Submarine, Submarine]
 
     KEY_FUNCS = {
-      Gosu::KbEscape =>  -> { close },
+      Gosu::KbEscape  => -> { close },
+      Gosu::KbR       => -> { reset },
 
-      Gosu::MsLeft   =>  -> { @position = Point.new( mouse_x, mouse_y ) }
+      Gosu::MsLeft    => -> { @position = Point.new( mouse_x, mouse_y ) }
     }
 
     attr_reader :font, :image, :computer_grid, :player_grid
@@ -26,10 +27,9 @@ module Battleships
       self.caption = 'Battleships'
 
       load_resources
-      fill_computer_grid
-
       @drawer = Drawer.new( self )
-      @phase  = :placement
+
+      reset
     end
 
     def needs_cursor?   # Enable the mouse cursor
@@ -37,6 +37,13 @@ module Battleships
     end
 
     def update
+      return unless @position
+
+      cpu_grid_pos = GridPos.pos_from_point( COMPUTER_GRID, @position )
+
+      @computer_grid.attack cpu_grid_pos unless cpu_grid_pos.nil?
+
+      @position = nil
     end
 
     def draw
@@ -52,16 +59,21 @@ module Battleships
 
     private
 
+    def reset
+      fill_computer_grid
+      @phase  = :placement
+    end
+
     def load_resources
       loader = ResourceLoader.new( self )
       @font   = loader.fonts
       @image  = loader.images
     end
-    
+
     def fill_computer_grid
       @computer_grid = Grid.new( :visible )
       SHIPS.each { |ship| @computer_grid.add_ship ship.new( @computer_grid ) }
-    end    
+    end
   end
 end
 

@@ -68,10 +68,10 @@ module Battleships
 
     def ship_at( pos )
       @ships.select { |ship| return ship if ship.at? pos }
-      
+
       nil
     end
-    
+
     private
 
     def empty_grid( width, height, visible )
