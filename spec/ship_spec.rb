@@ -102,19 +102,29 @@ module Battleships
       end
     end
     
-    describe '#map' do
-      it 'should return the horizontal list for a horizontal ship' do
+    describe '#piece_number' do
+      it 'should return the correct numbers for a horizontal ship' do
         poses = %w(A1 A2 A3 A4 A5)
         ac    = AircraftCarrier.new( grid, poses)
-        ac.piece_map.must_equal [0, 1, 2, 3, 4]
+
+        ac.piece_number( 'A1' ).must_equal 0
+        ac.piece_number( 'A2' ).must_equal 1
+        ac.piece_number( 'A3' ).must_equal 2
+        ac.piece_number( 'A4' ).must_equal 3
+        ac.piece_number( 'A5' ).must_equal 4
       end
 
-      it 'should return the vertical list for a vertical ship' do
+      it 'should return the correct numbers for a vertical ship' do
         poses = %w(A1 B1 C1 D1 E1)
         ac    = AircraftCarrier.new( grid, poses)
-        ac.piece_map.must_equal [6, 7, 8, 9, 10]
+        
+        ac.piece_number( 'A1' ).must_equal 6
+        ac.piece_number( 'B1' ).must_equal 7
+        ac.piece_number( 'C1' ).must_equal 8
+        ac.piece_number( 'D1' ).must_equal 9
+        ac.piece_number( 'E1' ).must_equal 10
       end
-    end
+    end 
   end
 
   describe Battleship do
@@ -157,19 +167,27 @@ module Battleships
       end
     end
     
-    describe '#map' do
-      it 'should return the horizontal list for a horizontal ship' do
+    describe '#piece_number' do
+      it 'should return the correct numbers for a horizontal ship' do
         poses = %w(A1 A2 A3 A4)
         ac    = Battleship.new( grid, poses)
-        ac.piece_map.must_equal [0, 1, 2, 4]
+
+        ac.piece_number( 'A1' ).must_equal 0
+        ac.piece_number( 'A2' ).must_equal 1
+        ac.piece_number( 'A3' ).must_equal 2
+        ac.piece_number( 'A4' ).must_equal 4
       end
 
-      it 'should return the vertical list for a vertical ship' do
+      it 'should return the correct numbers for a vertical ship' do
         poses = %w(B1 C1 D1 E1)
         ac    = Battleship.new( grid, poses)
-        ac.piece_map.must_equal [6, 7, 8, 10]
+        
+        ac.piece_number( 'B1' ).must_equal 6
+        ac.piece_number( 'C1' ).must_equal 7
+        ac.piece_number( 'D1' ).must_equal 8
+        ac.piece_number( 'E1' ).must_equal 10
       end
-    end
+    end 
   end
 
   describe Cruiser do
@@ -212,17 +230,23 @@ module Battleships
       end
     end
     
-    describe '#map' do
-      it 'should return the horizontal list for a horizontal ship' do
+    describe '#piece_number' do
+      it 'should return the correct numbers for a horizontal ship' do
         poses = %w(A2 A3 A4)
         ac    = Cruiser.new( grid, poses)
-        ac.piece_map.must_equal [0, 2, 4]
+
+        ac.piece_number( 'A2' ).must_equal 0
+        ac.piece_number( 'A3' ).must_equal 2
+        ac.piece_number( 'A4' ).must_equal 4
       end
 
-      it 'should return the vertical list for a vertical ship' do
+      it 'should return the correct numbers for a vertical ship' do
         poses = %w(C1 D1 E1)
         ac    = Cruiser.new( grid, poses)
-        ac.piece_map.must_equal [6, 8, 10]
+        
+        ac.piece_number( 'C1' ).must_equal 6
+        ac.piece_number( 'D1' ).must_equal 8
+        ac.piece_number( 'E1' ).must_equal 10
       end
     end
   end
@@ -267,17 +291,21 @@ module Battleships
       end
     end
     
-    describe '#map' do
-      it 'should return the horizontal list for a horizontal ship' do
+    describe '#piece_number' do
+      it 'should return the correct numbers for a horizontal ship' do
         poses = %w(A3 A4)
         ac    = Destroyer.new( grid, poses)
-        ac.piece_map.must_equal [0, 4]
+
+        ac.piece_number( 'A3' ).must_equal 0
+        ac.piece_number( 'A4' ).must_equal 4
       end
 
-      it 'should return the vertical list for a vertical ship' do
+      it 'should return the correct numbers for a vertical ship' do
         poses = %w(C1 D1)
         ac    = Destroyer.new( grid, poses)
-        ac.piece_map.must_equal [6, 10]
+        
+        ac.piece_number( 'C1' ).must_equal 6
+        ac.piece_number( 'D1' ).must_equal 10
       end
     end
   end
@@ -320,14 +348,14 @@ module Battleships
       end
     end
     
-    describe '#map' do
+    describe '#piece_number' do
       it 'should return one of the two possibilities' do
         poses = %w(A3)
         ac    = Submarine.new( grid, poses)
-        map   = ac.piece_map
-        
-        map.must_equal( map == [5] ? [5] : [11] )
-      end
+        piece = ac.piece_number 'A3'
+
+        piece.must_equal( piece == 5 ? 5 : 11 )
+      end      
     end
   end
 end

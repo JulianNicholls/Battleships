@@ -50,6 +50,12 @@ module Battleships
       self.class.length
     end
     
+    def piece_number( pos )
+      piece_map[parts.index pos]
+    end
+
+    private
+    
     def piece_map
       self.class.piece_maps[@map_index] if @map_index >= 0
     end

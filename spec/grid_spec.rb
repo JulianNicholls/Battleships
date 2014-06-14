@@ -31,6 +31,10 @@ module Battleships
         grid.cell_at( 'D', '5' ).state.must_equal :empty
       end
 
+      it "should return a cell via ('D', 5)" do
+        grid.cell_at( 'D', 5 ).state.must_equal :empty
+      end
+
       it "should return a cell via ('d5') and ('d', '5')" do
         grid.cell_at( 'd5' ).state.must_equal :empty
         grid.cell_at( 'd', '5' ).state.must_equal :empty
