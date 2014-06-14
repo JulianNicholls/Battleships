@@ -3,11 +3,15 @@
 require 'constants'
 require 'resources'
 require 'drawer'
+require 'shiptypes'
 
 module Battleships
   # Battleships game
   class Game < Gosu::Window
     include Constants
+
+    SHIPS = [AircraftCarrier, Battleship, Cruiser,
+             Destroyer, Destroyer, Submarine, Submarine]
 
     KEY_FUNCS = {
       Gosu::KbEscape =>  -> { close },
@@ -15,13 +19,14 @@ module Battleships
       Gosu::MsLeft   =>  -> { @position = Point.new( mouse_x, mouse_y ) }
     }
 
-    attr_reader :font, :image
+    attr_reader :font, :image, :computer_grid, :player_grid
 
     def initialize
       super( WIDTH, HEIGHT, false, 100 )
       self.caption = 'Battleships'
 
       load_resources
+      fill_computer_grid
 
       @drawer = Drawer.new( self )
       @phase  = :placement
@@ -52,6 +57,11 @@ module Battleships
       @font   = loader.fonts
       @image  = loader.images
     end
+    
+    def fill_computer_grid
+      @computer_grid = Grid.new( :visible )
+      SHIPS.each { |ship| @computer_grid.add_ship ship.new( @computer_grid ) }
+    end    
   end
 end
 

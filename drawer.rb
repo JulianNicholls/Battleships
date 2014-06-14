@@ -8,6 +8,8 @@ module Battleships
     include Constants
     include GosuEnhanced
 
+    ROWS = 'ABCDEFGHIJ'
+    
     def initialize( window )
       @window = window
     end
@@ -52,6 +54,8 @@ module Battleships
       lines( COMPUTER_GRID )
       lines( PLAYER_GRID )
 
+      draw_grid( @window.computer_grid, COMPUTER_GRID )
+      
       left = 20
 
       @window.image[:ship].each do |part|
@@ -73,6 +77,33 @@ module Battleships
         pos_x = pos_x.offset( CELL_SIZE.width, 0 )
         pos_y = pos_y.offset( 0, CELL_SIZE.width )
       end
+    end
+  
+    def draw_grid( grid, tlc_pos )
+      ROWS.each_char do |row|
+        (1..10).each do |col|
+          pos = "#{row}#{col}"
+          cell = grid.cell_at pos
+          draw_cell( grid, tlc_pos, pos, cell ) if cell.visible && cell.state != :empty
+        end
+      end
+    end
+
+    def draw_cell( grid, tlc_pos, pos, cell )
+      point = grid_point( tlc_pos, pos )
+      ship  = grid.ship_at pos
+      
+      unless ship.nil? 
+        num = ship.piece_number pos
+        @window.image[:ship][num].draw( point.x, point.y, 3 )
+      end
+      
+      @window.image[:ship][12].draw( point.x, point.y, 4 ) if cell.state == :miss
+      @window.image[:ship][13].draw( point.x, point.y, 4 ) if cell.state == :hit
+    end
+  
+    def grid_point( tlc, pos )
+      tlc.offset( (pos[1..-1].to_i - 1) * CELL_SIZE.width, (ROWS.index pos[0]) * CELL_SIZE.height )
     end
   end
 end
