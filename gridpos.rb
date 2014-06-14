@@ -1,6 +1,10 @@
+require './constants'
+
 module Battleships
   # Grid position traverser
   class GridPos
+    include Constants
+
     ROWS = 'ABCDEFGHIJ'
 
     def self.next( pos, direction )
@@ -46,6 +50,16 @@ module Battleships
       neighs << nnext unless nnext.nil?
 
       neighs
+    end
+
+    def self.pos_from_point( tlc, point )
+      offset = point.offset( -tlc.x, -tlc.y )
+      row = (offset.y / CELL_SIZE.height).floor
+      col = (offset.x / CELL_SIZE.width).ceil
+
+      return nil unless row.between?( 0, 9 ) && col.between?( 1, 10 )
+
+      ROWS[row] + col.to_s
     end
   end
 end
