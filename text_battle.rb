@@ -40,7 +40,7 @@ module Battleships
     def player_play
       print bright_white, "\nLocation: "
       loc = STDIN.gets.chomp
-      if @computer_grid.attack( loc ) 
+      if @computer_grid.attack( loc )
         puts 'HIT!'
         check_sunk( loc )
       else
@@ -56,11 +56,11 @@ module Battleships
 
     def check_sunk( loc )
       ship = @computer_grid.ship_at loc
-      
-      if ship.sunk?
-        @computer_ships_sunk << ship
-        puts "You sunk a #{ship.type}"
-      end
+
+      return unless ship.sunk?
+
+      @computer_ships_sunk << ship
+      puts "You sunk a #{ship.type}"
     end
   end
 end
