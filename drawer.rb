@@ -56,12 +56,7 @@ module Battleships
 
       draw_grid( @window.computer_grid, COMPUTER_GRID )
 
-      left = 20
-
-      @window.image[:ship].each do |part|
-        part.draw( left, 420, 3 )
-        left += 33
-      end
+#      show_all_parts
     end
 
     def lines( tlc_pos )
@@ -112,6 +107,17 @@ module Battleships
         (pos[1..-1].to_i - 1) * CELL_SIZE.width,
         (ROWS.index pos[0]) * CELL_SIZE.height
       )
+    end
+
+    # for debugging
+
+    def show_all_parts
+      left = 20
+
+      @window.image[:ship].each do |part|
+        part.draw( left, 420, 3 )
+        left += 33
+      end
     end
   end
 end

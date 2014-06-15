@@ -39,7 +39,8 @@ module Battleships
     def update
       return unless @position
 
-      cpu_grid_pos = GridPos.pos_from_point( COMPUTER_GRID, @position )
+      player_grid_pos = GridPos.pos_from_point( PLAYER_GRID, @position )
+      cpu_grid_pos    = GridPos.pos_from_point( COMPUTER_GRID, @position )
 
       @computer_grid.attack cpu_grid_pos unless cpu_grid_pos.nil?
 
@@ -51,6 +52,8 @@ module Battleships
       @drawer.header
       @drawer.title
       @drawer.grids
+
+      @font[:info].draw( SHIPS[@ship_idx].to_s, INFO_AREA.x, INFO_AREA.y, 2, 1, 1, INFO )
     end
 
     def button_down( btn_id )
@@ -61,7 +64,10 @@ module Battleships
 
     def reset
       fill_computer_grid
-      @phase  = :placement
+
+      @player_grid  = Grid.new :visible
+      @phase        = :placement
+      @ship_idx     = 0
     end
 
     def load_resources
@@ -71,7 +77,8 @@ module Battleships
     end
 
     def fill_computer_grid
-      @computer_grid = Grid.new( :visible )
+      @computer_grid = Grid.new
+
       SHIPS.each { |ship| @computer_grid.add_ship ship.new( @computer_grid ) }
     end
   end
