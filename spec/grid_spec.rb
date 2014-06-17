@@ -129,19 +129,75 @@ module Battleships
         poses = %w(A1 A2 A3 A4)
         grid.add_ship( Battleship.new( grid, poses ) )
 
+        grid.ships.size.must_equal 1
+
         poses.each { |pos| grid.cell_at( pos ).state.must_equal :occupied }
       end
 
       it 'should be able to insert a ship randomly and separately' do
         grid  = Grid.new
         bs    = Battleship.new( grid )
-        grid.add_ship( bs )
+        grid.add_ship bs
 
         bs.parts.wont_be_empty
         grid.ships.first.parts.wont_be_empty
         grid.ships.first.parts.each do |pos|
           grid.cell_at( pos ).state.must_equal :occupied
         end
+      end
+    end
+
+    describe '#remove_ship' do
+      it 'should allow removing a ship that is present' do
+        grid  = Grid.new
+        poses = %w(A1 A2 A3 A4)
+        bs    = Battleship.new( grid, poses )
+        grid.add_ship bs
+
+        grid.ships.size.must_equal 1
+        poses.each { |pos| grid.cell_at( pos ).state.must_equal :occupied }
+
+        grid.remove_ship bs
+        grid.ships.size.must_equal 0
+        poses.each { |pos| grid.cell_at( pos ).state.must_equal :empty }
+      end
+
+      it 'should ignore removing a ship that is not present' do
+        grid    = Grid.new
+        poses1  = %w(A1 A2 A3 A4)
+        bs1     = Battleship.new( grid, poses1 )
+        poses2  = %w(C1 C2 C3)
+        c1      = Cruiser.new( grid, poses2 )
+
+        grid.add_ship bs1
+
+        grid.ships.size.must_equal 1
+        poses1.each { |pos| grid.cell_at( pos ).state.must_equal :occupied }
+
+        grid.remove_ship c1
+        grid.ships.size.must_equal 1
+        poses1.each { |pos| grid.cell_at( pos ).state.must_equal :occupied }
+      end
+
+      it 'should remove the correct ship' do
+        grid    = Grid.new
+        poses1  = %w(A1 A2 A3 A4)
+        bs1     = Battleship.new( grid, poses1 )
+        poses2  = %w(A6 A7 A8)
+        c1      = Cruiser.new( grid, poses2 )
+
+        grid.add_ship bs1
+        grid.add_ship c1
+
+        grid.ships.size.must_equal 2
+        poses1.each { |pos| grid.cell_at( pos ).state.must_equal :occupied }
+        poses2.each { |pos| grid.cell_at( pos ).state.must_equal :occupied }
+
+        grid.remove_ship bs1
+        grid.ships.size.must_equal 1
+        grid.ships[0].must_equal c1
+        poses1.each { |pos| grid.cell_at( pos ).state.must_equal :empty }
+        poses2.each { |pos| grid.cell_at( pos ).state.must_equal :occupied }
       end
     end
 
