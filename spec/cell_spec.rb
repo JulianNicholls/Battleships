@@ -139,5 +139,16 @@ module Battleships
         cell.state.must_equal :occupied
       end
     end
+    
+    describe '#empty' do
+      it 'should go from occupied to empty' do
+        cell = Cell.new
+        cell.state.must_equal :empty
+        cell.set
+        cell.state.must_equal :occupied
+        cell.empty
+        cell.state.must_equal :empty
+      end
+    end
   end
 end

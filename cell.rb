@@ -44,6 +44,10 @@ module Battleships
       @state = :occupied
     end
 
+    def empty
+      @state = :empty
+    end
+
     def empty?
       state == :empty || state == :miss
     end
