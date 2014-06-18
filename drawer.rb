@@ -55,6 +55,7 @@ module Battleships
       lines( PLAYER_GRID )
 
       draw_grid( @window.computer_grid, COMPUTER_GRID )
+      draw_grid( @window.player_grid, PLAYER_GRID )
 
 #      show_all_parts
     end
