@@ -57,7 +57,7 @@ module Battleships
       draw_grid( @window.computer_grid, COMPUTER_GRID )
       draw_grid( @window.player_grid, PLAYER_GRID )
 
-#      show_all_parts
+      # show_all_parts
     end
 
     def lines( tlc_pos )

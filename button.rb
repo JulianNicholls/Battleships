@@ -8,12 +8,12 @@ module Battleships
     include GosuEnhanced
 
     attr_accessor :visible
-    
+
     def initialize( window, origin, size, colour )
       @window = window
       @region = Region.new( origin, size )
       @colour = colour
-      
+
       hide
     end
 
@@ -24,7 +24,7 @@ module Battleships
     def to_s
       "#{@region} #{@colour}"
     end
-    
+
     def show
       @visible = true
     end
@@ -32,7 +32,7 @@ module Battleships
     def hide
       @visible = false
     end
-    
+
     def contains?( col, row = nil )
       visible && @region.contains?( col, row )
     end
@@ -47,18 +47,20 @@ module Battleships
 
       measure_size( window )
 
-      super( window, origin, @size, Gosu::Color::BLACK )
+      super( window, origin, @size, colour )
     end
 
     def draw
       return unless visible
+
       # Black outline
       super
 
       # White interior
 
       @window.draw_rectangle(
-        @region.position.offset( 1, 1 ), @region.size.deflate( 2, 2 ), 2, Gosu::Color::WHITE
+        @region.position.offset( 1, 1 ), @region.size.deflate( 2, 2 ),
+        2, Gosu::Color::WHITE
       )
 
       # Passed colour used for text
@@ -68,11 +70,11 @@ module Battleships
         @region.top + @size.height / 4, 3, 1, 1, @colour
       )
     end
-    
+
     def width
       @region.width
     end
-    
+
     def height
       @region.height
     end

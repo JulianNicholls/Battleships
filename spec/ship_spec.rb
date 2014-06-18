@@ -59,30 +59,30 @@ module Battleships
           poses.each { |pos| bs.at?( pos ).must_equal true }
         end
       end
-      
+
       describe '#swap_orientation' do
         it 'should swap from across to down' do
           bs = Battleship.new( grid, %w(A1 A2 A3 A4) )
-          
+
           bs.swap_orientation
           bs.parts.must_equal %w(A1 B1 C1 D1)
         end
 
         it 'should swap from down to across' do
           bs = Battleship.new( grid, %w(A1 B1 C1 D1) )
-          
+
           bs.swap_orientation
           bs.parts.must_equal %w(A1 A2 A3 A4)
         end
 
         it 'should do nothing if the ship does not fit the other way' do
           bs = Battleship.new( grid, %w(A8 B8 C8 D8) )
-          
+
           bs.swap_orientation
           bs.parts.must_equal %w(A8 B8 C8 D8)
 
           bs = Battleship.new( grid, %w(H1 H2 H3 H4) )
-          
+
           bs.swap_orientation
           bs.parts.must_equal %w(H1 H2 H3 H4)
         end

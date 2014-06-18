@@ -139,7 +139,7 @@ module Battleships
         cell.state.must_equal :occupied
       end
     end
-    
+
     describe '#empty' do
       it 'should go from occupied to empty' do
         cell = Cell.new

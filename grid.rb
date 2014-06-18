@@ -23,12 +23,12 @@ module Battleships
         ship.parts.each { |pos| set pos }
       end
     end
-    
+
     def remove_ship( ship )
       return unless @ships.include? ship
-      
+
       @ships.delete ship
-      
+
       ship.parts.each { |pos| cell_at( pos ).empty }
     end
 
@@ -76,7 +76,7 @@ module Battleships
 
     def ship_at( pos )
       @ships.each { |ship| return ship if ship.at?( pos ) }
-      
+
       nil
     end
 

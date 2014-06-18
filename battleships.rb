@@ -29,9 +29,8 @@ module Battleships
 
       load_resources
       @drawer = Drawer.new( self )
-      @btn_insert = TextButton.new( self, INFO_AREA.offset( 300, 20 ), BUTTON, 'Insert' )
-      @btn_cancel = TextButton.new( self, INFO_AREA.offset( 300 - @btn_insert.width * 1.5, 20 ), BUTTON, 'Cancel' )
-      
+      create_buttons
+
       reset
     end
 
@@ -42,19 +41,9 @@ module Battleships
     def update
       return unless @position
 
-      grid_pos = GridPos.pos_from_point( PLAYER_GRID, @position )
-
-      return insert_ship( grid_pos ) if @phase == :placement && !grid_pos.nil?
-
-      if @phase == :placing
-        rotate_ship if @cur_ship.at? grid_pos
-        finish_ship if @btn_insert.contains? @position
-        cancel_ship if @btn_cancel.contains? @position
-      elsif @phase == :playing
-        grid_pos = GridPos.pos_from_point( COMPUTER_GRID, @position )
-
-        @computer_grid.attack grid_pos unless grid_pos.nil?
-      end
+      update_placing   if @phase == :placing
+      update_placement if @phase == :placement
+      update_playing   if @phase == :playing
 
       @position = nil
     end
@@ -95,11 +84,29 @@ module Battleships
       SHIPS.each { |ship| @computer_grid.add_ship ship.new( @computer_grid ) }
     end
 
+    def update_placement
+      grid_pos = GridPos.pos_from_point( PLAYER_GRID, @position )
+
+      insert_ship( grid_pos ) unless grid_pos.nil?
+    end
+
+    def update_placing
+      rotate_ship if @cur_ship.at? GridPos.pos_from_point( PLAYER_GRID, @position )
+      finish_ship if @btn_insert.contains? @position
+      cancel_ship if @btn_cancel.contains? @position
+    end
+
+    def update_playing
+      grid_pos = GridPos.pos_from_point( COMPUTER_GRID, @position )
+
+      @computer_grid.attack grid_pos unless grid_pos.nil?
+    end
+
     def draw_instructions
       case @phase
-      when :placement then  ins_text = "Click to place a #{@cur_ship.type}"
-      when :placing   then  ins_text = "Click ship to swap between horizontal and vertical"
-      when :playing   then  ins_text = "Click on computer grid to attack"
+      when :placement then ins_text = "Click to place a #{@cur_ship.type}"
+      when :placing   then ins_text = 'Click ship to swap between across and down'
+      when :playing   then ins_text = 'Click on computer grid to attack'
       end
 
       @font[:info].draw( ins_text, INFO_AREA.x, INFO_AREA.y, 2, 1, 1, INFO )
@@ -127,17 +134,17 @@ module Battleships
       @cur_ship.swap_orientation
       @player_grid.add_ship @cur_ship
     end
-    
+
     def finish_ship
       @ship_idx += 1
       next_ship
     end
-    
+
     def cancel_ship
       @player_grid.remove_ship @cur_ship
       next_ship
     end
-    
+
     def next_ship
       if @ship_idx < SHIPS.size
         @cur_ship = SHIPS[@ship_idx].new( @player_grid )
@@ -148,12 +155,23 @@ module Battleships
 
       hide_buttons
     end
-    
+
+    def create_buttons
+      @btn_insert = TextButton.new(
+        self, INFO_AREA.offset( 300, 20 ), BUTTON, 'Insert'
+      )
+
+      @btn_cancel = TextButton.new(
+        self, INFO_AREA.offset( 300 - @btn_insert.width * 1.5, 20 ),
+        BUTTON, 'Cancel'
+      )
+    end
+
     def show_buttons
       @btn_insert.show
       @btn_cancel.show
     end
-    
+
     def hide_buttons
       @btn_insert.hide
       @btn_cancel.hide
