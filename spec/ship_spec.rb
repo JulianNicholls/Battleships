@@ -74,6 +74,18 @@ module Battleships
           bs.swap_orientation
           bs.parts.must_equal %w(A1 A2 A3 A4)
         end
+
+        it 'should do nothing if the ship does not fit the other way' do
+          bs = Battleship.new( grid, %w(A8 B8 C8 D8) )
+          
+          bs.swap_orientation
+          bs.parts.must_equal %w(A8 B8 C8 D8)
+
+          bs = Battleship.new( grid, %w(H1 H2 H3 H4) )
+          
+          bs.swap_orientation
+          bs.parts.must_equal %w(H1 H2 H3 H4)
+        end
       end
     end
   end

@@ -56,8 +56,9 @@ module Battleships
       new_dir = @map_index == 0 ? :down : :across
       parts = [@parts.first]
       
-      (length - 1).times do |n|
-        parts[n+1] = GridPos.next( parts[n], new_dir )
+      (1..length - 1).each do |n|
+        parts[n] = GridPos.next( parts[n - 1], new_dir )
+        return if parts[n].nil?
       end
       
       self.parts = parts
