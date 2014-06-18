@@ -51,6 +51,17 @@ module Battleships
     def piece_number( pos )
       piece_map[parts.index pos]
     end
+    
+    def swap_orientation
+      new_dir = @map_index == 0 ? :down : :across
+      parts = [@parts.first]
+      
+      (length - 1).times do |n|
+        parts[n+1] = GridPos.next( parts[n], new_dir )
+      end
+      
+      self.parts = parts
+    end
 
     private
 
