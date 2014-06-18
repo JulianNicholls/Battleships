@@ -14,7 +14,8 @@ module Battleships
         moves:  Gosu::Font.new( @window, Gosu.default_font_name, 24 ),
         header: Gosu::Font.new( @window, Gosu.default_font_name, 36 ),
         title:  Gosu::Font.new( @window, Gosu.default_font_name, 24 ),
-        info:   Gosu::Font.new( @window, Gosu.default_font_name, 18 )
+        info:   Gosu::Font.new( @window, Gosu.default_font_name, 16 ),
+        button: Gosu::Font.new( @window, Gosu.default_font_name, 14 )
       }
     end
 
@@ -26,16 +27,16 @@ module Battleships
       }
     end
 
-    def sounds
-      {
-        flip: Gosu::Sample.new( @window, 'media/Blip.wav' ),
-        tada: [Gosu::Sample.new( @window, 'media/tada.wav' ),
-               Gosu::Sample.new( @window, 'media/alleluia.wav' ),
-               Gosu::Sample.new( @window, 'media/shazam2.wav' ),
-               Gosu::Sample.new( @window, 'media/ww_kewl.wav' ),
-               Gosu::Sample.new( @window, 'media/yeehaw.wav' )]
-      }
-    end
+#    def sounds
+#      {
+#        flip: Gosu::Sample.new( @window, 'media/Blip.wav' ),
+#        tada: [Gosu::Sample.new( @window, 'media/tada.wav' ),
+#               Gosu::Sample.new( @window, 'media/alleluia.wav' ),
+#               Gosu::Sample.new( @window, 'media/shazam2.wav' ),
+#               Gosu::Sample.new( @window, 'media/ww_kewl.wav' ),
+#               Gosu::Sample.new( @window, 'media/yeehaw.wav' )]
+#      }
+#    end
 
     private
 
@@ -44,7 +45,8 @@ module Battleships
         moves:  Gosu::Font.new( @window, filename, 24 ),
         header: Gosu::Font.new( @window, filename, 36 ),
         title:  Gosu::Font.new( @window, filename, 24 ),
-        info:   Gosu::Font.new( @window, filename, 18 )
+        info:   Gosu::Font.new( @window, filename, 16 ),
+        button: Gosu::Font.new( @window, filename, 14 )
       }
     end
   end
