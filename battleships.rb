@@ -39,11 +39,14 @@ module Battleships
     end
 
     def update
+      update_thinking if @phase == :thinking
+      update_cpu_turn if @phase == :cpu_turn
+      
       return unless @position
 
-      update_placing   if @phase == :placing
-      update_placement if @phase == :placement
-      update_playing   if @phase == :playing
+      update_placing      if @phase == :placing
+      update_placement    if @phase == :placement
+      update_player_turn  if @phase == :player_turn
 
       @position = nil
     end
@@ -96,17 +99,40 @@ module Battleships
       cancel_ship if @btn_cancel.contains? @position
     end
 
-    def update_playing
+    def update_player_turn
       grid_pos = GridPos.pos_from_point( COMPUTER_GRID, @position )
 
       @computer_grid.attack grid_pos unless grid_pos.nil?
+      @phase = :thinking
+      @think_time = Time.now + 1 + 2 * rand
+    end
+    
+    def update_thinking
+      return if Time.now < @think_time
+      
+      @phase = :cpu_turn
+    end
+    
+    def update_cpu_turn
+      pos = ''
+      
+      loop do
+        pos   = GridPos.random_pos
+        state = @player_grid.cell_at( pos ).state
+        
+        break unless state == :miss || :state == :hit
+      end
+      
+      @player_grid.attack pos
+      @phase = :player_turn
     end
 
     def draw_instructions
-      case @phase
-      when :placement then ins_text = "Click to place a #{@cur_ship.type}"
-      when :placing   then ins_text = 'Click ship to swap between across and down'
-      when :playing   then ins_text = 'Click on computer grid to attack'
+      ins_text = case @phase
+      when :placement then  "Click to place a #{@cur_ship.type}"
+      when :placing   then  'Click ship to swap between across and down'
+      when :player_turn   then  'Click on computer grid to attack'
+      when :thinking  then  'Thinking...'
       end
 
       @font[:info].draw( ins_text, INFO_AREA.x, INFO_AREA.y, 2, 1, 1, INFO )
@@ -150,7 +176,7 @@ module Battleships
         @cur_ship = SHIPS[@ship_idx].new( @player_grid )
         @phase = :placement
       else
-        @phase = :playing
+        @phase = :player_turn
       end
 
       hide_buttons
