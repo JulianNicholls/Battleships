@@ -59,7 +59,11 @@ module Battleships
 
       return nil unless row.between?( 0, 9 ) && col.between?( 1, 10 )
 
-      ROWS[row] + col.to_s
+      "#{ROWS[row]}#{col}"
+    end
+    
+    def self.random_pos
+      "#{ROWS[rand ROWS.size]}#{rand( 1..10 )}"
     end
   end
 end

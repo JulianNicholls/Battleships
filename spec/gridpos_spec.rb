@@ -68,6 +68,12 @@ module Battleships
     end
 
     describe '#neighbours' do
+      it 'should return an empty array for a bad location' do
+        GridPos.neighbours( 'B11' ).must_equal []
+        GridPos.neighbours( 'B0' ).must_equal []
+        GridPos.neighbours( 'K5' ).must_equal []
+      end
+      
       it 'should return all four neighbours for a middle location' do
         GridPos.neighbours( 'B5' ).must_equal %w(B4 B6 A5 C5)
       end
@@ -97,6 +103,8 @@ module Battleships
     end
 
     describe '#pos_from_point' do
+        gep = GosuEnhanced::Point
+
       it 'should return nil for a point outside the grid' do
         gep = GosuEnhanced::Point
 
@@ -135,6 +143,19 @@ module Battleships
         GridPos.pos_from_point( origin, gep.new( 215, 185 ) ).must_equal 'E6'
         GridPos.pos_from_point( origin, gep.new( 185, 215 ) ).must_equal 'F5'
         GridPos.pos_from_point( origin, gep.new( 215, 215 ) ).must_equal 'F6'
+      end
+    end
+    
+    describe '#random_pos' do
+      it 'should return a random valid position repeatedly' do
+        prev = GridPos.random_pos
+        
+        10.times do
+          pos = GridPos.random_pos
+          GridPos.neighbours( pos ).wont_equal []
+          pos.wont_equal prev
+          prev = pos
+        end
       end
     end
   end
