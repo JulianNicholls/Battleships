@@ -61,7 +61,7 @@ module Battleships
 
       "#{ROWS[row]}#{col}"
     end
-    
+
     def self.random_pos
       "#{ROWS[rand ROWS.size]}#{rand( 1..10 )}"
     end

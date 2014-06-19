@@ -39,16 +39,11 @@ module Battleships
     end
 
     def update
-      update_thinking if @phase == :thinking
-      update_cpu_turn if @phase == :cpu_turn
-      
-      return unless @position
+      update_non_positional
 
-      update_placing      if @phase == :placing
-      update_placement    if @phase == :placement
-      update_player_turn  if @phase == :player_turn
+      return if @position.nil?
 
-      @position = nil
+      update_positional
     end
 
     def draw
@@ -87,6 +82,23 @@ module Battleships
       SHIPS.each { |ship| @computer_grid.add_ship ship.new( @computer_grid ) }
     end
 
+    def update_non_positional
+      case @phase
+      when :thinking  then update_thinking
+      when :cpu_turn  then update_cpu_turn
+      end
+    end
+
+    def update_positional
+      case @phase
+      when :placing     then update_placing
+      when :placement   then update_placement
+      when :player_turn then update_player_turn
+      end
+
+      @position = nil
+    end
+
     def update_placement
       grid_pos = GridPos.pos_from_point( PLAYER_GRID, @position )
 
@@ -106,34 +118,35 @@ module Battleships
       @phase = :thinking
       @think_time = Time.now + 1 + 2 * rand
     end
-    
+
     def update_thinking
       return if Time.now < @think_time
-      
+
       @phase = :cpu_turn
     end
-    
+
     def update_cpu_turn
       pos = ''
-      
+
       loop do
         pos   = GridPos.random_pos
         state = @player_grid.cell_at( pos ).state
-        
+
         break unless state == :miss || :state == :hit
       end
-      
+
       @player_grid.attack pos
       @phase = :player_turn
     end
 
     def draw_instructions
-      ins_text = case @phase
-      when :placement then  "Click to place a #{@cur_ship.type}"
-      when :placing   then  'Click ship to swap between across and down'
-      when :player_turn   then  'Click on computer grid to attack'
-      when :thinking  then  'Thinking...'
-      end
+      ins_text =
+        case @phase
+        when :placement   then  "Click to place a new #{@cur_ship.type}"
+        when :placing     then  'Click ship to swap between across and down'
+        when :player_turn then  'Click on computer grid to attack'
+        when :thinking    then  'Thinking...'
+        end
 
       @font[:info].draw( ins_text, INFO_AREA.x, INFO_AREA.y, 2, 1, 1, INFO )
       @btn_insert.draw
