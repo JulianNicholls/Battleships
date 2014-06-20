@@ -5,13 +5,14 @@ require 'resources'
 require 'drawer'
 require 'shiptypes'
 require 'button'
+require 'cpu_player'
 
 module Battleships
   # Battleships game
   class Game < Gosu::Window
     include Constants
 
-    SHIPS = [AircraftCarrier, Battleship, Cruiser,
+    SHIPS = [AircraftCarrier, Battleship, Cruiser, Cruiser,
              Destroyer, Destroyer, Submarine, Submarine]
 
     KEY_FUNCS = {
@@ -22,6 +23,7 @@ module Battleships
     }
 
     attr_reader :font, :image, :computer_grid, :player_grid
+    attr_accessor :phase
 
     def initialize
       super( WIDTH, HEIGHT, false, 100 )
@@ -39,10 +41,7 @@ module Battleships
     end
 
     def update
-      update_non_positional
-
-      return if @position.nil?
-
+      @cpu_player.update
       update_positional
     end
 
@@ -51,8 +50,9 @@ module Battleships
       @drawer.header
       @drawer.title
       @drawer.grids
+      @drawer.instructions @cur_ship.type
 
-      draw_instructions
+      draw_buttons
     end
 
     def button_down( btn_id )
@@ -68,6 +68,8 @@ module Battleships
       @phase        = :placement
       @ship_idx     = 0
       next_ship
+
+      @cpu_player = CPUPlayer.new( self )
     end
 
     def load_resources
@@ -82,14 +84,9 @@ module Battleships
       SHIPS.each { |ship| @computer_grid.add_ship ship.new( @computer_grid ) }
     end
 
-    def update_non_positional
-      case @phase
-      when :thinking  then update_thinking
-      when :cpu_turn  then update_cpu_turn
-      end
-    end
-
     def update_positional
+      return if @position.nil?
+
       case @phase
       when :placing     then update_placing
       when :placement   then update_placement
@@ -114,43 +111,10 @@ module Battleships
     def update_player_turn
       grid_pos = GridPos.pos_from_point( COMPUTER_GRID, @position )
 
-      @computer_grid.attack grid_pos unless grid_pos.nil?
-      @phase = :thinking
-      @think_time = Time.now + 1 + 2 * rand
-    end
+      return if grid_pos.nil?
 
-    def update_thinking
-      return if Time.now < @think_time
-
-      @phase = :cpu_turn
-    end
-
-    def update_cpu_turn
-      pos = ''
-
-      loop do
-        pos   = GridPos.random_pos
-        state = @player_grid.cell_at( pos ).state
-
-        break unless state == :miss || :state == :hit
-      end
-
-      @player_grid.attack pos
-      @phase = :player_turn
-    end
-
-    def draw_instructions
-      ins_text =
-        case @phase
-        when :placement   then  "Click to place a new #{@cur_ship.type}"
-        when :placing     then  'Click ship to swap between across and down'
-        when :player_turn then  'Click on computer grid to attack'
-        when :thinking    then  'Thinking...'
-        end
-
-      @font[:info].draw( ins_text, INFO_AREA.x, INFO_AREA.y, 2, 1, 1, INFO )
-      @btn_insert.draw
-      @btn_cancel.draw
+      @computer_grid.attack grid_pos
+      @cpu_player.set_thinking
     end
 
     def insert_ship( pos )
@@ -196,14 +160,17 @@ module Battleships
     end
 
     def create_buttons
-      @btn_insert = TextButton.new(
-        self, INFO_AREA.offset( 300, 20 ), BUTTON, 'Insert'
-      )
+      approx_width = @font[:button].text_width( 'Insert' ) * 2
+      insert_pos   = Point.new( WIDTH - approx_width, INFO_AREA.y + 20 )
+      cancel_pos   = insert_pos.offset( -approx_width, 0 )
 
-      @btn_cancel = TextButton.new(
-        self, INFO_AREA.offset( 300 - @btn_insert.width * 1.5, 20 ),
-        BUTTON, 'Cancel'
-      )
+      @btn_insert = TextButton.new( self, insert_pos, BUTTON, 'Insert' )
+      @btn_cancel = TextButton.new( self, cancel_pos, BUTTON, 'Cancel' )
+    end
+
+    def draw_buttons
+      @btn_insert.draw
+      @btn_cancel.draw
     end
 
     def show_buttons

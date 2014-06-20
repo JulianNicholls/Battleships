@@ -60,6 +60,20 @@ module Battleships
       # show_all_parts
     end
 
+    def instructions( type )
+      ins_text =
+        case @window.phase
+        when :placement   then  "Click on the player grid to place a new #{type}"
+        when :placing     then  'Click ship to swap between across and down'
+        when :player_turn then  'Click on computer grid to attack'
+        when :thinking    then  'Thinking...'
+        end
+
+      @window.font[:info].draw( ins_text, INFO_AREA.x, INFO_AREA.y, 2, 1, 1, INFO )
+    end
+
+    private
+
     def lines( tlc_pos )
       pos_y = pos_x = tlc_pos
 
