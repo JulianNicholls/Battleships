@@ -1,6 +1,5 @@
+require 'forwardable'
 require 'gosu_enhanced'
-
-# require 'constants'
 
 module Battleships
   # Button class
@@ -41,6 +40,9 @@ module Battleships
   # Textual Button that sizes itself based on its text content
   class TextButton < Button
     include GosuEnhanced
+    extend Forwardable
+
+    def_delegators :@region, :position, :width, :height
 
     def initialize( window, origin, colour, text )
       @text = text
@@ -53,7 +55,7 @@ module Battleships
     def draw
       return unless visible
 
-      # Black outline
+      # outline
       super
 
       # White interior
@@ -69,14 +71,6 @@ module Battleships
         @text, @region.left + 2 * @text_size.width / @text.size,
         @region.top + @size.height / 4, 3, 1, 1, @colour
       )
-    end
-
-    def width
-      @region.width
-    end
-
-    def height
-      @region.height
     end
 
     private

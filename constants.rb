@@ -5,7 +5,7 @@ module Battleships
   module Constants
     include GosuEnhanced
 
-    MARGIN        = 5
+    MARGIN        = 7
 
     HEADER_HEIGHT = 40
 
@@ -22,13 +22,13 @@ module Battleships
     INFO_AREA     = COMPUTER_GRID.offset( 0, MARGIN * 2 + GRID_HEIGHT )
 
     WIDTH         = PLAYER_GRID.x + GRID_WIDTH + 3 * MARGIN
-    HEIGHT        = INFO_AREA.y + HEADER_HEIGHT + MARGIN * 2
+    HEIGHT        = INFO_AREA.y + HEADER_HEIGHT + MARGIN * 3
 
     BACKGROUND    = Gosu::Color.new( 0xff000060 )
-    BORDER        = Gosu::Color.new( 0xff000050 )
+    BORDER        = Gosu::Color.new( 0xff004080 )
     HEADER_TEXT   = Gosu::Color.new( 0xffeeee00 )
     GRID_LINE     = Gosu::Color.new( 0xc0b0b0b0 )
     INFO          = Gosu::Color.new( 0xffffffff )
-    BUTTON        = Gosu::Color.new( 0xff000050 )
+    BUTTON        = Gosu::Color.new( 0xff000020 )
   end
 end
