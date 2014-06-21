@@ -22,7 +22,7 @@ module Battleships
       Gosu::MsLeft    => -> { @position = Point.new( mouse_x, mouse_y ) }
     }
 
-    attr_reader :font, :image, :computer_grid, :player_grid
+    attr_reader :font, :image, :computer_grid, :player_grid, :sound
     attr_accessor :phase
 
     def initialize
@@ -59,6 +59,10 @@ module Battleships
       instance_exec( &KEY_FUNCS[btn_id] ) if KEY_FUNCS.key? btn_id
     end
 
+    def play( sound )
+      @sound[sound].play  
+    end
+    
     private
 
     def reset
@@ -73,9 +77,10 @@ module Battleships
     end
 
     def load_resources
-      loader = ResourceLoader.new( self )
+      loader  = ResourceLoader.new( self )
       @font   = loader.fonts
       @image  = loader.images
+      @sound  = loader.sounds
     end
 
     def fill_computer_grid
@@ -113,7 +118,8 @@ module Battleships
 
       return if grid_pos.nil?
 
-      @computer_grid.attack grid_pos
+      play( @computer_grid.attack( grid_pos ) ? :hit : :miss )
+      
       @cpu_player.set_thinking
     end
 

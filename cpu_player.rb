@@ -36,7 +36,7 @@ module Battleships
         break unless [:miss, :hit].include? state
       end
 
-      grid.attack pos
+      @game.play( grid.attack( pos ) ? :hit : :miss )
       @game.phase = :player_turn
     end
   end

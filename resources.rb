@@ -27,16 +27,12 @@ module Battleships
       }
     end
 
-    # def sounds
-    #   {
-    #     flip: Gosu::Sample.new( @window, 'media/Blip.wav' ),
-    #     tada: [Gosu::Sample.new( @window, 'media/tada.wav' ),
-    #            Gosu::Sample.new( @window, 'media/alleluia.wav' ),
-    #            Gosu::Sample.new( @window, 'media/shazam2.wav' ),
-    #            Gosu::Sample.new( @window, 'media/ww_kewl.wav' ),
-    #            Gosu::Sample.new( @window, 'media/yeehaw.wav' )]
-    #   }
-    # end
+    def sounds
+      {
+        hit:  Gosu::Sample.new( @window, 'media/Explosion.wav' ),
+        miss: Gosu::Sample.new( @window, 'media/Miss.wav' )
+      }
+    end
 
     private
 
