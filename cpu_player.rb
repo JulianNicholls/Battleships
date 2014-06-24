@@ -26,18 +26,44 @@ module Battleships
     end
 
     def update_attack
-      pos  = ''
-      grid = @game.player_grid
-
-      loop do
-        pos   = GridPos.random_pos
-        state = grid.cell_at( pos ).state
-
-        break unless [:miss, :hit].include? state
+      if @last_hit_pos
+        attack_intelligently
+      else
+        attack_randomly
       end
 
-      @game.play( grid.attack( pos ) ? :hit : :miss )
       @game.phase = :player_turn
+    end
+
+    def attack_randomly
+      pos = GridPos.random_pos until candidate? pos
+
+      attack_and_rate pos
+    end
+
+    def attack_intelligently
+      pos = GridPos.next( @last_hit_pos, :across )
+      return attack_and_rate( pos ) if candidate? pos
+
+      pos = GridPos.prev( @last_hit_pos, :across )
+      return attack_and_rate( pos ) if candidate? pos
+
+      pos = GridPos.next( @last_hit_pos, :down )
+      return attack_and_rate( pos ) if candidate? pos
+
+      pos = GridPos.prev( @last_hit_pos, :down )
+      return attack_and_rate( pos ) if candidate? pos
+    end
+
+    def attack_and_rate( pos )
+      result_hit = @game.player_grid.attack( pos )
+
+      @game.play( result_hit ? :hit : :miss )
+      @last_hit_pos = result_hit ? pos : nil
+    end
+
+    def candidate?( pos )
+      pos && ![:hit, :miss].include?( @game.player_grid.cell_at( pos ).state )
     end
   end
 end
