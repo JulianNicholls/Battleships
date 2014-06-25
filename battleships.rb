@@ -6,6 +6,7 @@ require 'drawer'
 require 'shiptypes'
 require 'button'
 require 'cpu_player'
+require 'overlay'
 
 module Battleships
   # Battleships game
@@ -16,8 +17,8 @@ module Battleships
              Destroyer, Destroyer, Submarine, Submarine]
 
     KEY_FUNCS = {
-      Gosu::KbEscape  => -> { close },
-      Gosu::KbR       => -> { reset },
+      Gosu::KbEscape  => -> { close if @overlay },
+      Gosu::KbR       => -> { reset if @overlay },
 
       Gosu::MsLeft    => -> { @position = Point.new( mouse_x, mouse_y ) }
     }
@@ -27,11 +28,13 @@ module Battleships
 
     def initialize
       super( WIDTH, HEIGHT, false, 100 )
-      self.caption = 'Battleships'
+      self.caption = 'Gosu Battleships'
 
       load_resources
-      @drawer = Drawer.new( self )
       create_buttons
+
+      @drawer     = Drawer.new( self )
+      @cpu_player = CPUPlayer.new( self )
 
       reset
     end
@@ -41,6 +44,7 @@ module Battleships
     end
 
     def update
+      update_complete?
       @cpu_player.update
       update_positional
     end
@@ -50,6 +54,9 @@ module Battleships
       @drawer.header
       @drawer.title
       @drawer.grids
+
+      return @overlay.draw if @overlay
+
       @drawer.instructions @cur_ship.type
 
       draw_buttons
@@ -60,9 +67,9 @@ module Battleships
     end
 
     def play( sound )
-      @sound[sound].play  
+      @sound[sound].play
     end
-    
+
     private
 
     def reset
@@ -73,11 +80,12 @@ module Battleships
       @ship_idx     = 0
       next_ship
 
-      @cpu_player = CPUPlayer.new( self )
+      @overlay = nil
     end
 
     def load_resources
       loader  = ResourceLoader.new( self )
+
       @font   = loader.fonts
       @image  = loader.images
       @sound  = loader.sounds
@@ -87,6 +95,14 @@ module Battleships
       @computer_grid = Grid.new
 
       SHIPS.each { |ship| @computer_grid.add_ship ship.new( @computer_grid ) }
+    end
+
+    def update_complete?
+      if @player_grid.complete? || @computer_grid.complete?
+        cpu_won  = @player_grid.complete?
+        @overlay = CompleteOverlay.new( self, cpu_won ? 'Computer' : 'Player' )
+        @phase   = :complete
+      end
     end
 
     def update_positional
@@ -119,7 +135,7 @@ module Battleships
       return if grid_pos.nil?
 
       play( @computer_grid.attack( grid_pos ) ? :hit : :miss )
-      
+
       @cpu_player.set_thinking
     end
 
@@ -166,11 +182,11 @@ module Battleships
     end
 
     def create_buttons
-      approx_width = @font[:button].text_width( 'Insert' ) * 2
+      approx_width = @font[:button].text_width( 'Cancel' ) * 2
       insert_pos   = Point.new( WIDTH - approx_width, INFO_AREA.y + 20 )
       cancel_pos   = insert_pos.offset( -approx_width, 0 )
 
-      @btn_insert = TextButton.new( self, insert_pos, BUTTON, 'Insert' )
+      @btn_insert = TextButton.new( self, insert_pos, BUTTON, 'Place' )
       @btn_cancel = TextButton.new( self, cancel_pos, BUTTON, 'Cancel' )
     end
 
