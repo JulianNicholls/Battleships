@@ -247,6 +247,11 @@ module Battleships
     end
     
     describe '#complete?' do
+      it 'should return false if there are no ships' do
+        grid   = Grid.new
+        grid.complete?.must_equal false
+      end
+      
       it 'should return false if not all the ships are sunk' do
         grid   = Grid.new
         poses1 = %w(A1 A2 A3 A4)

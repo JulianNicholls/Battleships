@@ -81,7 +81,7 @@ module Battleships
     end
 
     def complete?
-      @ships.all? { |ship| ship.sunk? }
+      !@ships.empty? && @ships.all? { |ship| ship.sunk? }
     end
     
     private
