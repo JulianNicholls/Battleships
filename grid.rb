@@ -80,6 +80,10 @@ module Battleships
       nil
     end
 
+    def complete?
+      @ships.all? { |ship| ship.sunk? }
+    end
+    
     private
 
     def empty_grid( width, height, visible )

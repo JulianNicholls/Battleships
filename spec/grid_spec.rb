@@ -245,5 +245,57 @@ module Battleships
         grid.ship_at( 'C3' ).must_equal bs2
       end
     end
+    
+    describe '#complete?' do
+      it 'should return false if not all the ships are sunk' do
+        grid   = Grid.new
+        poses1 = %w(A1 A2 A3 A4)
+        bs1    = Battleship.new( grid, poses1 )
+
+        poses2 = %w(C1 C2 C3 C4)
+        bs2    = Battleship.new( grid, poses2 )
+
+        grid.add_ship( bs1 )
+        grid.add_ship( bs2 )
+        
+        grid.attack( 'A1' )        
+        grid.attack( 'A2' )        
+        grid.attack( 'A3' )        
+        grid.attack( 'C1' )        
+        grid.attack( 'C2' )        
+        grid.attack( 'C3' )
+        grid.complete?.must_equal false
+
+        grid.attack( 'A4' )   # One is sunk, other isn't        
+        grid.complete?.must_equal false        
+      end
+
+      it 'should return true if all the ships are sunk' do
+        grid   = Grid.new
+        poses1 = %w(A1 A2 A3 A4)
+        bs1    = Battleship.new( grid, poses1 )
+
+        poses2 = %w(C1 C2 C3 C4)
+        bs2    = Battleship.new( grid, poses2 )
+
+        grid.add_ship( bs1 )
+        
+        grid.attack( 'A1' )        
+        grid.attack( 'A2' )        
+        grid.attack( 'A3' )        
+        grid.attack( 'A4' )        
+        grid.complete?.must_equal true
+
+        grid.add_ship( bs2 )
+        
+        grid.attack( 'C1' )        
+        grid.attack( 'C2' )        
+        grid.attack( 'C3' )
+        grid.complete?.must_equal false
+
+        grid.attack( 'C4' )        
+        grid.complete?.must_equal true        
+      end
+    end
   end
 end
