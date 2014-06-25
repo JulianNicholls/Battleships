@@ -20,9 +20,15 @@ module Battleships
     def draw
       @game.draw_rectangle( @pos.offset( -10, -10 ), @size.inflate( 20, 20 ),
                             5, SHADOW )
-                            
+
       @game.draw_rectangle( @pos, @size, 5, OVERLAY_BG )
 
+      draw_text
+    end
+
+    private
+
+    def draw_text
       complete  = 'Complete'
       hsize     = @header.measure( complete )
       hpos      = @pos.offset( (@size.width - hsize.width) / 2, hsize.height / 2 )
@@ -32,7 +38,7 @@ module Battleships
       complete  = "#{@victor} has won."
       tsize     = @text.measure( complete )
       hpos      = @pos.offset( (@size.width - tsize.width) / 2, hsize.height * 3 )
-      
+
       @text.draw( complete, hpos.x, hpos.y, 6, 1, 1, BACKGROUND )
     end
   end

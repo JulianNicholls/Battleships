@@ -52,9 +52,7 @@ module Battleships
       ROWS.each_char do |letter|
         str << "#{letter} " if headers
 
-        (1..10).each do |col|
-          str << "#{cell_at( letter, col ).shape} "
-        end
+        (1..10).each { |col| str << "#{cell_at( letter, col ).shape} " }
 
         str << "\n"
       end
@@ -83,7 +81,7 @@ module Battleships
     def complete?
       !@ships.empty? && @ships.all? { |ship| ship.sunk? }
     end
-    
+
     private
 
     def empty_grid( width, height, visible )

@@ -98,11 +98,11 @@ module Battleships
     end
 
     def update_complete?
-      if @player_grid.complete? || @computer_grid.complete?
-        cpu_won  = @player_grid.complete?
-        @overlay = CompleteOverlay.new( self, cpu_won ? 'Computer' : 'Player' )
-        @phase   = :complete
-      end
+      return unless @player_grid.complete? || @computer_grid.complete?
+
+      cpu_won  = @player_grid.complete?
+      @overlay = CompleteOverlay.new( self, cpu_won ? 'Computer' : 'Player' )
+      @phase   = :complete
     end
 
     def update_positional

@@ -49,7 +49,7 @@ module Battleships
           return attack_and_rate( pos ) if candidate? pos
         end
       end
-      
+
       @last_hit_pos = nil
       attack_randomly
     end
