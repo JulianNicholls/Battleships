@@ -27,8 +27,11 @@ module Battleships
     BACKGROUND    = Gosu::Color.new( 0xff000060 )
     BORDER        = Gosu::Color.new( 0xff004080 )
     HEADER_TEXT   = Gosu::Color.new( 0xffeeee00 )
-    GRID_LINE     = Gosu::Color.new( 0xc0b0b0b0 )
+    GRID_LINE     = Gosu::Color.new( 0xe0b0b0b0 )
     INFO          = Gosu::Color.new( 0xffffffff )
     BUTTON        = Gosu::Color.new( 0xff000020 )
+    
+    OVERLAY_BG    = Gosu::Color.new( 0xe0ffffff )   # Translucent white
+    SHADOW        = Gosu::Color.new( 0x80000000 )
   end
 end

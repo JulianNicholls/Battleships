@@ -11,7 +11,6 @@ module Battleships
       return load_font( filename ) if File.readable? filename
 
       {
-        moves:  Gosu::Font.new( @window, Gosu.default_font_name, 24 ),
         header: Gosu::Font.new( @window, Gosu.default_font_name, 36 ),
         title:  Gosu::Font.new( @window, Gosu.default_font_name, 24 ),
         info:   Gosu::Font.new( @window, Gosu.default_font_name, 16 ),
@@ -38,7 +37,6 @@ module Battleships
 
     def load_font( filename )
       {
-        moves:  Gosu::Font.new( @window, filename, 24 ),
         header: Gosu::Font.new( @window, filename, 36 ),
         title:  Gosu::Font.new( @window, filename, 24 ),
         info:   Gosu::Font.new( @window, filename, 16 ),
