@@ -1,10 +1,11 @@
 require 'gridpos.rb'
 
 module Battleships
-  # CPU Player. Initially just a random shot.
+  # CPU Player. Initially just a random shot, then adjacent cells after a hit.
   class CPUPlayer
     def initialize( game )
-      @game = game
+      @game         = game
+      @last_hit_pos = nil
     end
 
     def update
@@ -42,24 +43,22 @@ module Battleships
     end
 
     def attack_intelligently
-      pos = GridPos.next( @last_hit_pos, :across )
-      return attack_and_rate( pos ) if candidate? pos
-
-      pos = GridPos.prev( @last_hit_pos, :across )
-      return attack_and_rate( pos ) if candidate? pos
-
-      pos = GridPos.next( @last_hit_pos, :down )
-      return attack_and_rate( pos ) if candidate? pos
-
-      pos = GridPos.prev( @last_hit_pos, :down )
-      return attack_and_rate( pos ) if candidate? pos
+      [:across, :down].each do |dir|
+        [:next, :prev].each do |func|
+          pos = GridPos.send( func, @last_hit_pos, dir )
+          return attack_and_rate( pos ) if candidate? pos
+        end
+      end
+      
+      @last_hit_pos = nil
+      attack_randomly
     end
 
     def attack_and_rate( pos )
       result_hit = @game.player_grid.attack( pos )
 
       @game.play( result_hit ? :hit : :miss )
-      @last_hit_pos = result_hit ? pos : nil
+      @last_hit_pos = pos if result_hit && @last_hit_pos.nil?
     end
 
     def candidate?( pos )
