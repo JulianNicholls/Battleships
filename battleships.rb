@@ -7,6 +7,7 @@ require 'shiptypes'
 require 'button'
 require 'cpu_player'
 require 'overlay'
+require 'holder'
 
 module Battleships
   # Battleships game
@@ -31,8 +32,8 @@ module Battleships
       self.caption = 'Gosu Battleships'
 
       load_resources
-      create_buttons
-
+      
+      @buttons    = ButtonHolder.new( self )
       @drawer     = Drawer.new( self )
       @cpu_player = CPUPlayer.new( self )
 
@@ -46,7 +47,7 @@ module Battleships
     def update
       update_complete?
       @cpu_player.update
-      update_positional
+      update_positional unless @position.nil?
     end
 
     def draw
@@ -59,7 +60,7 @@ module Battleships
 
       @drawer.instructions @cur_ship.type
 
-      draw_buttons
+      @buttons.draw
     end
 
     def button_down( btn_id )
@@ -106,8 +107,6 @@ module Battleships
     end
 
     def update_positional
-      return if @position.nil?
-
       case @phase
       when :placing     then update_placing
       when :placement   then update_placement
@@ -125,14 +124,14 @@ module Battleships
 
     def update_placing
       rotate_ship if @cur_ship.at? GridPos.pos_from_point( PLAYER_GRID, @position )
-      finish_ship if @btn_insert.contains? @position
-      cancel_ship if @btn_cancel.contains? @position
+      finish_ship if @buttons.insert.contains? @position
+      cancel_ship if @buttons.cancel.contains? @position
     end
 
     def update_player_turn
       grid_pos = GridPos.pos_from_point( COMPUTER_GRID, @position )
 
-      return if grid_pos.nil?
+      return if grid_pos.nil? || @computer_grid.cell_at( grid_pos ).visible
 
       play( @computer_grid.attack( grid_pos ) ? :hit : :miss )
 
@@ -142,7 +141,7 @@ module Battleships
     def insert_ship( pos )
       parts = [pos]
 
-      (1..@cur_ship.length - 1).each do |n|
+      (1...@cur_ship.length).each do |n|
         parts[n] = GridPos.next( parts[n - 1], :across )
         return if parts[n].nil?
       end
@@ -151,7 +150,7 @@ module Battleships
       @player_grid.add_ship @cur_ship
       @phase = :placing
       @position = nil
-      show_buttons
+      @buttons.show
     end
 
     def rotate_ship
@@ -178,31 +177,7 @@ module Battleships
         @phase = :player_turn
       end
 
-      hide_buttons
-    end
-
-    def create_buttons
-      approx_width = @font[:button].text_width( 'Cancel' ) * 2
-      insert_pos   = Point.new( WIDTH - approx_width, INFO_AREA.y + 20 )
-      cancel_pos   = insert_pos.offset( -approx_width, 0 )
-
-      @btn_insert = TextButton.new( self, insert_pos, BUTTON, 'Place' )
-      @btn_cancel = TextButton.new( self, cancel_pos, BUTTON, 'Cancel' )
-    end
-
-    def draw_buttons
-      @btn_insert.draw
-      @btn_cancel.draw
-    end
-
-    def show_buttons
-      @btn_insert.show
-      @btn_cancel.show
-    end
-
-    def hide_buttons
-      @btn_insert.hide
-      @btn_cancel.hide
+      @buttons.hide
     end
   end
 end
