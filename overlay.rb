@@ -11,10 +11,11 @@ module Battleships
       @game   = game
       @victor = victor
       @header = game.font[:header]
-      @text   = game.font[:title]
+      @title  = game.font[:title]
+      @ins    = game.font[:info]
 
-      @size     = Size.new( WIDTH / 2, HEIGHT / 2 )
-      @pos      = Point.new( WIDTH / 4, HEIGHT / 3 )
+      @size   = Size.new( WIDTH * 2 / 3, HEIGHT / 2 )
+      @pos    = Point.new( WIDTH / 6, HEIGHT / 3 )
     end
 
     def draw
@@ -23,23 +24,40 @@ module Battleships
 
       @game.draw_rectangle( @pos, @size, 5, OVERLAY_BG )
 
-      draw_text
+      draw_header
+      draw_instructions
     end
 
     private
 
-    def draw_text
-      complete  = 'Complete'
+    def draw_header
+      complete  = 'The battle is over'
       hsize     = @header.measure( complete )
-      hpos      = @pos.offset( (@size.width - hsize.width) / 2, hsize.height / 2 )
+      hpos      = @pos.offset( (@size.width - hsize.width) / 2, hsize.height )
 
       @header.draw( complete, hpos.x, hpos.y, 6, 1, 1, BACKGROUND )
 
       complete  = "#{@victor} has won."
-      tsize     = @text.measure( complete )
+      tsize     = @title.measure( complete )
       hpos      = @pos.offset( (@size.width - tsize.width) / 2, hsize.height * 3 )
 
-      @text.draw( complete, hpos.x, hpos.y, 6, 1, 1, BACKGROUND )
+      @title.draw( complete, hpos.x, hpos.y, 6, 1, 1, BACKGROUND )
+    end
+
+    def draw_instructions
+      text  = 'Press Escape to Exit'
+      tsize = @ins.measure( text )
+      hpos  = @pos.offset( (@size.width - tsize.width) / 2,
+                           @size.height - tsize.height * 4 )
+
+      @ins.draw( text, hpos.x, hpos.y, 6, 1, 1, BORDER )
+
+      text  = 'Press R to Restart'
+      tsize = @ins.measure( text )
+      hpos  = @pos.offset( (@size.width - tsize.width) / 2,
+                           @size.height - tsize.height * 5 / 2 )
+
+      @ins.draw( text, hpos.x, hpos.y, 6, 1, 1, BORDER )
     end
   end
 end
