@@ -106,9 +106,9 @@ module Battleships
       dir = [:across, :down][rand 2]
 
       if dir == :across
-        cur = ROWS[rand @height] + rand( 1..((@width + 1) - length) ).to_s
+        cur = "#{ROWS[rand @height]}#{rand( 1...(@width - length) )}"
       else
-        cur = ROWS[rand( @height - length )] + rand( 1..@width ).to_s
+        cur = "#{ROWS[rand( @height - length )]}#{rand( 1..@width )}"
       end
 
       [dir, cur]

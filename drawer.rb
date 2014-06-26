@@ -64,8 +64,8 @@ module Battleships
       ins_text =
         case @window.phase
         when :placement   then  "Click on the player grid to place a new #{type}"
-        when :placing     then  'Click ship to swap between across and down'
-        when :player_turn then  'Click on computer grid to attack'
+        when :placing     then  'Click on the ship to swap between across and down'
+        when :player_turn then  'Click on the computer grid to attack'
         when :thinking    then  'Thinking...'
         end
 
