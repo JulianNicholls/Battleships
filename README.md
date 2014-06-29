@@ -30,6 +30,19 @@ After the computer or player has won
     Press R to Restart
     Press Esc to Exit
 
+### Computer Intelligence
+
+This game exemplifies the problem with player vs computer games. 
+Of course, the computer 'knows' where all of the player's ships are, 
+but that information must not be used.
+
+Currently, the computer starts off firing randomly. When it scores a hit, it attacks
+the un-attacked adjacent four squares around the hit before reverting to random
+shots.
+
+I'm going to up the IQ a little, since I can beat it every time at the moment, which is
+not right because it's essentially random and there should be an element of luck.
+
 ### Pretty Font
 
 There is an option to use freeware font 'Good Times' from Typodermic Fonts, Inc.
