@@ -4,8 +4,8 @@ module Battleships
   # CPU Player. Initially just a random shot, then adjacent cells after a hit.
   class CPUPlayer
     def initialize( game )
-      @game         = game
-      @last_hit_pos = nil
+      @game     = game
+      @hit_list = []
     end
 
     def update
@@ -27,11 +27,7 @@ module Battleships
     end
 
     def update_attack
-      if @last_hit_pos
-        attack_intelligently
-      else
-        attack_randomly
-      end
+      attack_intelligently
 
       @game.phase = :player_turn
     end
@@ -43,14 +39,8 @@ module Battleships
     end
 
     def attack_intelligently
-      [:across, :down].each do |dir|
-        [:next, :prev].each do |func|
-          pos = GridPos.send( func, @last_hit_pos, dir )
-          return attack_and_rate( pos ) if candidate? pos
-        end
-      end
+      return attack_and_rate( @hit_list.shift ) unless @hit_list.empty?
 
-      @last_hit_pos = nil
       attack_randomly
     end
 
@@ -58,7 +48,16 @@ module Battleships
       result_hit = @game.player_grid.attack( pos )
 
       @game.play( result_hit ? :hit : :miss )
-      @last_hit_pos = pos if result_hit && @last_hit_pos.nil?
+      add_to_hit_list( pos ) if result_hit
+    end
+
+    def add_to_hit_list( pos )
+      [:across, :down].each do |dir|
+        [:next, :prev].each do |func|
+          adj = GridPos.send( func, pos, dir )
+          @hit_list.push( adj ) if candidate?( adj ) && !@hit_list.include?( adj )
+        end
+      end
     end
 
     def candidate?( pos )
