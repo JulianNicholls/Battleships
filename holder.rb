@@ -31,5 +31,4 @@ module Battleships
       @cancel.hide
     end
   end
-
 end

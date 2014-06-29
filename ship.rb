@@ -12,7 +12,7 @@ module Battleships
     end
 
     def initialize( grid, positions = [] )
-      fail "Position list wrong length #{positions.length}, should be #{length}" \
+      fail "Position list wrong length (#{positions.length}), should be #{length}" \
         unless positions.empty? || positions.size == length
 
       @map_index = -1

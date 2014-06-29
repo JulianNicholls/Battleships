@@ -1,9 +1,10 @@
 #!/usr/bin/env ruby -I.
 
-require 'constants'
 require 'resources'
 require 'drawer'
 require 'shiptypes'
+require 'constants'
+require 'placer'
 require 'button'
 require 'cpu_player'
 require 'overlay'
@@ -14,9 +15,6 @@ module Battleships
   class Game < Gosu::Window
     include Constants
 
-    SHIPS = [AircraftCarrier, Battleship, Cruiser, Cruiser,
-             Destroyer, Destroyer, Submarine, Submarine]
-
     KEY_FUNCS = {
       Gosu::KbEscape  => -> { close if @overlay },
       Gosu::KbR       => -> { reset if @overlay },
@@ -24,7 +22,10 @@ module Battleships
       Gosu::MsLeft    => -> { @position = Point.new( mouse_x, mouse_y ) }
     }
 
-    attr_reader :font, :image, :computer_grid, :player_grid, :sound
+    SHIPS = [AircraftCarrier, Battleship, Cruiser, Cruiser,
+             Destroyer, Destroyer, Submarine, Submarine]
+
+    attr_reader :font, :image, :computer_grid, :player_grid, :sound, :buttons
     attr_accessor :phase
 
     def initialize
@@ -32,7 +33,7 @@ module Battleships
       self.caption = 'Gosu Battleships'
 
       load_resources
-      
+
       @buttons    = ButtonHolder.new( self )
       @drawer     = Drawer.new( self )
       @cpu_player = CPUPlayer.new( self )
@@ -58,7 +59,7 @@ module Battleships
 
       return @overlay.draw if @overlay
 
-      @drawer.instructions @cur_ship.type
+      @drawer.instructions @placer.current
 
       @buttons.draw
     end
@@ -71,17 +72,20 @@ module Battleships
       @sound[sound].play
     end
 
+    def ship_class( num )
+      return nil unless num < SHIPS.size
+
+      SHIPS[num]
+    end
+
     private
 
     def reset
       fill_computer_grid
 
       @player_grid  = Grid.new :visible
-      @phase        = :placement
-      @ship_idx     = 0
-      next_ship
-
-      @overlay = nil
+      @placer       = ShipPlacer.new self
+      @overlay      = nil
     end
 
     def load_resources
@@ -101,31 +105,19 @@ module Battleships
     def update_complete?
       return unless @player_grid.complete? || @computer_grid.complete?
 
-      cpu_won  = @player_grid.complete?
-      @overlay = CompleteOverlay.new( self, cpu_won ? 'Computer' : 'Player' )
-      @phase   = :complete
+      cpu_won     = @player_grid.complete?
+      @overlay    = CompleteOverlay.new( self, cpu_won ? 'Computer' : 'Player' )
+      self.phase  = :complete
     end
 
     def update_positional
-      case @phase
-      when :placing     then update_placing
-      when :placement   then update_placement
-      when :player_turn then update_player_turn
+      if phase == :player_turn
+        update_player_turn
+      elsif [:placing, :placement].include? phase
+        @placer.update( @position )
       end
 
       @position = nil
-    end
-
-    def update_placement
-      grid_pos = GridPos.pos_from_point( PLAYER_GRID, @position )
-
-      insert_ship( grid_pos ) unless grid_pos.nil?
-    end
-
-    def update_placing
-      rotate_ship if @cur_ship.at? GridPos.pos_from_point( PLAYER_GRID, @position )
-      finish_ship if @buttons.insert.contains? @position
-      cancel_ship if @buttons.cancel.contains? @position
     end
 
     def update_player_turn
@@ -136,48 +128,6 @@ module Battleships
       play( @computer_grid.attack( grid_pos ) ? :hit : :miss )
 
       @cpu_player.set_thinking
-    end
-
-    def insert_ship( pos )
-      parts = [pos]
-
-      (1...@cur_ship.length).each do |n|
-        parts[n] = GridPos.next( parts[n - 1], :across )
-        return if parts[n].nil?
-      end
-
-      @cur_ship.parts = parts
-      @player_grid.add_ship @cur_ship
-      @phase = :placing
-      @position = nil
-      @buttons.show
-    end
-
-    def rotate_ship
-      @player_grid.remove_ship @cur_ship
-      @cur_ship.swap_orientation
-      @player_grid.add_ship @cur_ship
-    end
-
-    def finish_ship
-      @ship_idx += 1
-      next_ship
-    end
-
-    def cancel_ship
-      @player_grid.remove_ship @cur_ship
-      next_ship
-    end
-
-    def next_ship
-      if @ship_idx < SHIPS.size
-        @cur_ship = SHIPS[@ship_idx].new( @player_grid )
-        @phase = :placement
-      else
-        @phase = :player_turn
-      end
-
-      @buttons.hide
     end
   end
 end
