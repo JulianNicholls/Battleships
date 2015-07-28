@@ -15,14 +15,14 @@ module Battleships
       end
 
       it 'should be initializable empty and invisible by choice' do
-        cell = Cell.new( :empty, false )
+        cell = Cell.new(:empty, false)
         cell.state.must_equal :empty
         cell.empty?.must_equal true
         cell.visible.must_equal false
       end
 
       it 'should be initializable empty and visible' do
-        cell = Cell.new( :empty, :visible )
+        cell = Cell.new(:empty, :visible)
         cell.state.must_equal :empty
         cell.empty?.must_equal true
         cell.visible.wont_equal false
@@ -36,7 +36,7 @@ module Battleships
       end
 
       it 'should be initializable occupied and visible' do
-        cell = Cell.new( :occupied, true )
+        cell = Cell.new(:occupied, true)
         cell.state.must_equal :occupied
         cell.empty?.must_equal false
         cell.visible.wont_equal false
@@ -77,7 +77,7 @@ module Battleships
         cell.attack.must_equal true
       end
 
-      it 'should change the state and visibilty for an attacked occupied square' do
+      it 'should change state and visibilty for an attacked occupied square' do
         cell = Cell.new :occupied
         cell.attack
         cell.state.must_equal :hit
@@ -110,24 +110,24 @@ module Battleships
 
         occ.attack
         occ.shape.wont_equal ' '   # Always visible once attacked
-        occ.shape.must_match( /\*/ )
+        occ.shape.must_match(/\*/)
       end
 
       it "should return '+' for occupied and visible" do
-        occ = Cell.new( :occupied, :visible )
-        occ.shape.must_match( /\+/ )
+        occ = Cell.new(:occupied, :visible)
+        occ.shape.must_match(/\+/)
       end
 
       it "should return 'X' for miss" do
-        occ = Cell.new( :empty )
+        occ = Cell.new(:empty)
         occ.attack
-        occ.shape.must_match( /X/ )
+        occ.shape.must_match(/X/)
       end
 
       it "should return '*' for hit" do
-        occ = Cell.new( :occupied )
+        occ = Cell.new(:occupied)
         occ.attack
-        occ.shape.must_match( /\*/ )
+        occ.shape.must_match(/\*/)
       end
     end
 

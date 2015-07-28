@@ -15,7 +15,7 @@ module Battleships
 
     def initialize
       @computer_grid = Grid.new
-      @player_grid   = Grid.new( :visible )
+      @player_grid   = Grid.new(:visible)
 
       @player_ships_sunk   = []
       @computer_ships_sunk = []
@@ -24,8 +24,8 @@ module Battleships
     end
 
     def show
-      lefts  = @computer_grid.to_s( :headers ).lines
-      rights = @player_grid.to_s( :headers ).lines
+      lefts  = @computer_grid.to_s(:headers).lines
+      rights = @player_grid.to_s(:headers).lines
 
       puts bright_cyan, "\n        Computer                      Player", white
       lefts.each_with_index do |left, idx|
@@ -34,15 +34,15 @@ module Battleships
     end
 
     def fill_user # temporary
-      SHIPS.each { |ship| @player_grid.add_ship ship.new( @player_grid ) }
+      SHIPS.each { |ship| @player_grid.add_ship ship.new(@player_grid) }
     end
 
     def player_play
       print bright_white, "\nLocation: "
       loc = STDIN.gets.chomp
-      if @computer_grid.attack( loc )
+      if @computer_grid.attack(loc)
         puts 'HIT!'
-        check_sunk( loc )
+        check_sunk(loc)
       else
         puts 'You Missed'
       end
@@ -51,10 +51,10 @@ module Battleships
     private
 
     def fill_computer
-      SHIPS.each { |ship| @computer_grid.add_ship ship.new( @computer_grid ) }
+      SHIPS.each { |ship| @computer_grid.add_ship ship.new(@computer_grid) }
     end
 
-    def check_sunk( loc )
+    def check_sunk(loc)
       ship = @computer_grid.ship_at loc
 
       return unless ship.sunk?

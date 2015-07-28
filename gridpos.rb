@@ -7,7 +7,7 @@ module Battleships
 
     ROWS = 'ABCDEFGHIJ'
 
-    def self.next( pos, direction )
+    def self.next(pos, direction)
       mdata = /\A([A-J])(10|[1-9])\z/.match pos.upcase
 
       return nil if mdata.nil?
@@ -21,7 +21,7 @@ module Battleships
       end
     end
 
-    def self.prev( pos, direction )
+    def self.prev(pos, direction)
       mdata = /\A([A-J])(10|[1-9])\z/.match pos.upcase
 
       return nil if mdata.nil?
@@ -31,39 +31,39 @@ module Battleships
         mdata[1] + (mdata[2].to_i - 1).to_s
       else
         return nil if mdata[1] == ROWS[0]
-        row = ROWS[ROWS.index( mdata[1] ) - 1]
+        row = ROWS[ROWS.index(mdata[1]) - 1]
         row + mdata[2]
       end
     end
 
-    def self.neighbours( pos )
-      nnext = GridPos.prev( pos, :across )
+    def self.neighbours(pos)
+      nnext = GridPos.prev(pos, :across)
       neighs = nnext.nil? ? [] : [nnext]
 
-      nnext = GridPos.next( pos, :across )
+      nnext = GridPos.next(pos, :across)
       neighs << nnext unless nnext.nil?
 
-      nnext = GridPos.prev( pos, :down )
+      nnext = GridPos.prev(pos, :down)
       neighs << nnext unless nnext.nil?
 
-      nnext = GridPos.next( pos, :down )
+      nnext = GridPos.next(pos, :down)
       neighs << nnext unless nnext.nil?
 
       neighs
     end
 
-    def self.pos_from_point( tlc, point )
-      offset = point.offset( -tlc.x, -tlc.y )
+    def self.pos_from_point(tlc, point)
+      offset = point.offset(-tlc.x, -tlc.y)
       row = (offset.y / CELL_SIZE.height).floor
       col = (offset.x / CELL_SIZE.width).ceil
 
-      return nil unless row.between?( 0, 9 ) && col.between?( 1, 10 )
+      return nil unless row.between?(0, 9) && col.between?(1, 10)
 
       "#{ROWS[row]}#{col}"
     end
 
     def self.random_pos
-      "#{ROWS[rand ROWS.size]}#{rand( 1..10 )}"
+      "#{ROWS[rand ROWS.size]}#{rand(1..10)}"
     end
   end
 end

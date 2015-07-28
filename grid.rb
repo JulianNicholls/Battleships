@@ -8,31 +8,31 @@ module Battleships
 
     attr_reader :ships
 
-    def initialize( visible = false, width = 10, height = 10 )
+    def initialize(visible = false, width = 10, height = 10)
       @width, @height = width, height
-      @grid  = empty_grid( width, height, visible )
+      @grid  = empty_grid(width, height, visible)
       @ships = []
     end
 
-    def add_ship( ship )
+    def add_ship(ship)
       @ships << ship
 
       if ship.parts.empty?
-        insert( ship )
+        insert(ship)
       else
         ship.parts.each { |pos| set pos }
       end
     end
 
-    def remove_ship( ship )
+    def remove_ship(ship)
       return unless @ships.include? ship
 
       @ships.delete ship
 
-      ship.parts.each { |pos| cell_at( pos ).empty }
+      ship.parts.each { |pos| cell_at(pos).empty }
     end
 
-    def cell_at( letter, number = nil )
+    def cell_at(letter, number = nil)
       letter.upcase!
 
       if letter.size > 1
@@ -46,13 +46,13 @@ module Battleships
       @grid[row * @width + col - 1]
     end
 
-    def to_s( headers = false )
+    def to_s(headers = false)
       str = headers ? top_header : ''
 
       ROWS.each_char do |letter|
         str << "#{letter} " if headers
 
-        (1..10).each { |col| str << "#{cell_at( letter, col ).shape} " }
+        (1..10).each { |col| str << "#{cell_at(letter, col).shape} " }
 
         str << "\n"
       end
@@ -60,20 +60,20 @@ module Battleships
       str
     end
 
-    def set( row, col = nil )
-      cell_at( row, col ).set
+    def set(row, col = nil)
+      cell_at(row, col).set
     end
 
-    def attack( row, col = nil )
-      cell_at( row, col ).attack
+    def attack(row, col = nil)
+      cell_at(row, col).attack
     end
 
     def show
-      @grid.map( &:show )
+      @grid.map(&:show)
     end
 
-    def ship_at( pos )
-      @ships.each { |ship| return ship if ship.at?( pos ) }
+    def ship_at(pos)
+      @ships.each { |ship| return ship if ship.at?(pos) }
 
       nil
     end
@@ -84,59 +84,59 @@ module Battleships
 
     private
 
-    def empty_grid( width, height, visible )
-      Array.new( width * height ) { Cell.new( :empty, visible ) }
+    def empty_grid(width, height, visible)
+      Array.new(width * height) { Cell.new(:empty, visible) }
     end
 
-    def insert( ship )
+    def insert(ship)
       length = ship.length
       poses  = []
 
       loop do
-        dir, cur = random_start_point( length )
-        poses = try( length, cur, dir )
+        dir, cur = random_start_point(length)
+        poses = try(length, cur, dir)
         break unless poses.nil?
       end
 
-      poses.each { |pos| cell_at( pos ).set }
+      poses.each { |pos| cell_at(pos).set }
       ship.parts = poses
     end
 
-    def random_start_point( length )
+    def random_start_point(length)
       dir = [:across, :down][rand 2]
 
       if dir == :across
-        cur = "#{ROWS[rand @height]}#{rand( 1...(@width - length) )}"
+        cur = "#{ROWS[rand @height]}#{rand(1...(@width - length))}"
       else
-        cur = "#{ROWS[rand( @height - length )]}#{rand( 1..@width )}"
+        cur = "#{ROWS[rand(@height - length)]}#{rand(1..@width)}"
       end
 
       [dir, cur]
     end
 
-    def try( length, cur, dir )
+    def try(length, cur, dir)
       poses = []
 
       loop do
-        break unless isolated?( cur )
+        break unless isolated?(cur)
 
         poses << cur
         return poses if poses.size == length
-        cur = GridPos.next( cur, dir )
+        cur = GridPos.next(cur, dir)
       end
 
       nil
     end
 
-    def isolated?( pos )
-      return false unless cell_at( pos ).empty?
+    def isolated?(pos)
+      return false unless cell_at(pos).empty?
 
-      GridPos.neighbours( pos ).all? { |loc| cell_at( loc ).empty? }
+      GridPos.neighbours(pos).all? { |loc| cell_at(loc).empty? }
     end
 
     def top_header
       str = '  '
-      (1..10).each { |n| str << format( '%-2d', n ) }
+      (1..10).each { |n| str << format('%-2d', n) }
       "#{str}\n"
     end
   end

@@ -8,7 +8,7 @@ module Battleships
     attr_reader :state
     attr_accessor :visible
 
-    def initialize( state = :empty, visible = false )
+    def initialize(state = :empty, visible = false)
       @state, @visible = state, visible
     end
 

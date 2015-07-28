@@ -7,13 +7,13 @@ module Battleships
 
     attr_reader :insert, :cancel
 
-    def initialize( game )
-      approx_width = game.font[:button].text_width( 'Cancel' ) * 2
-      insert_pos   = Point.new( WIDTH - approx_width, INFO_AREA.y + 20 )
-      cancel_pos   = insert_pos.offset( -approx_width, 0 )
+    def initialize(game)
+      approx_width = game.font[:button].text_width('Cancel') * 2
+      insert_pos   = Point.new(WIDTH - approx_width, INFO_AREA.y + 20)
+      cancel_pos   = insert_pos.offset(-approx_width, 0)
 
-      @insert = TextButton.new( game, insert_pos, BUTTON, 'Place' )
-      @cancel = TextButton.new( game, cancel_pos, BUTTON, 'Cancel' )
+      @insert = TextButton.new(game, insert_pos, BUTTON, 'Place')
+      @cancel = TextButton.new(game, cancel_pos, BUTTON, 'Cancel')
     end
 
     def draw

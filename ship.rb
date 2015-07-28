@@ -11,8 +11,8 @@ module Battleships
       attr_reader :piece_maps
     end
 
-    def initialize( grid, positions = [] )
-      fail "Position list wrong length (#{positions.length}), should be #{length}" \
+    def initialize(grid, positions = [])
+      fail "Position list wrong length (#{positions.size}), should be #{length}" \
         unless positions.empty? || positions.size == length
 
       @map_index = -1
@@ -21,18 +21,18 @@ module Battleships
     end
 
     def type
-      self.class.to_s.split( '::' ).last
+      self.class.to_s.split('::').last
     end
 
     def sunk?
-      parts.all? { |pos| @grid.cell_at( pos ).state == :hit }
+      parts.all? { |pos| @grid.cell_at(pos).state == :hit }
     end
 
-    def at?( pos )
+    def at?(pos)
       parts.include? pos
     end
 
-    def parts=( poses )
+    def parts=(poses)
       @parts = poses
 
       return if poses.empty?
@@ -40,7 +40,7 @@ module Battleships
       if poses.size == 1
         @map_index = rand 2   # Submarine, randomly horizontal / vertical
       else
-        @map_index = poses[1] == GridPos.next( poses[0], :across ) ? 0 : 1
+        @map_index = poses[1] == GridPos.next(poses[0], :across) ? 0 : 1
       end
     end
 
@@ -48,7 +48,7 @@ module Battleships
       self.class.length
     end
 
-    def piece_number( pos )
+    def piece_number(pos)
       piece_map[parts.index pos]
     end
 
@@ -57,7 +57,7 @@ module Battleships
       parts = [@parts.first]
 
       (1...length).each do |n|
-        parts[n] = GridPos.next( parts[n - 1], new_dir )
+        parts[n] = GridPos.next(parts[n - 1], new_dir)
         return if parts[n].nil?
       end
 
