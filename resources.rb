@@ -22,16 +22,16 @@ module Battleships
 
     def images
       {
-        waves1: Gosu::Image.new(@window, 'media/waves1.png', true),
-        waves2: Gosu::Image.new(@window, 'media/waves2.png', true),
-        ship:   Gosu::Image.load_tiles(@window, 'media/Ship.png', 30, 30, true)
+        waves1: Gosu::Image.new('media/waves1.png'),
+        waves2: Gosu::Image.new('media/waves2.png'),
+        ship:   Gosu::Image.load_tiles('media/Ship.png', 30, 30)
       }
     end
 
     def sounds
       {
-        hit:  Gosu::Sample.new(@window, 'media/Explosion.wav'),
-        miss: Gosu::Sample.new(@window, 'media/Miss.wav')
+        hit:  Gosu::Sample.new('media/Explosion.wav'),
+        miss: Gosu::Sample.new('media/Miss.wav')
       }
     end
 
