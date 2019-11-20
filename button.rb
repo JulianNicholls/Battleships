@@ -67,7 +67,7 @@ module Battleships
 
       # Passed colour used for text
 
-      @window.font[:button].draw(
+      @window.font[:button].draw_text(
         @text, @region.left + 2 * @text_size.width / @text.size,
         @region.top + @size.height / 4, 3, 1, 1, @colour
      )

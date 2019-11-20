@@ -35,13 +35,13 @@ module Battleships
       hsize     = @header.measure(complete)
       hpos      = @pos.offset((@size.width - hsize.width) / 2, hsize.height)
 
-      @header.draw(complete, hpos.x, hpos.y, 6, 1, 1, BACKGROUND)
+      @header.draw_text(complete, hpos.x, hpos.y, 6, 1, 1, BACKGROUND)
 
       complete  = "#{@victor} has won."
       tsize     = @title.measure(complete)
       hpos      = @pos.offset((@size.width - tsize.width) / 2, hsize.height * 3)
 
-      @title.draw(complete, hpos.x, hpos.y, 6, 1, 1, BACKGROUND)
+      @title.draw_text(complete, hpos.x, hpos.y, 6, 1, 1, BACKGROUND)
     end
 
     def draw_instructions
@@ -50,14 +50,14 @@ module Battleships
       hpos  = @pos.offset((@size.width - tsize.width) / 2,
                           @size.height - tsize.height * 4)
 
-      @ins.draw(text, hpos.x, hpos.y, 6, 1, 1, BORDER)
+      @ins.draw_text(text, hpos.x, hpos.y, 6, 1, 1, BORDER)
 
       text  = 'Press R to Restart'
       tsize = @ins.measure(text)
       hpos  = @pos.offset((@size.width - tsize.width) / 2,
                           @size.height - tsize.height * 5 / 2)
 
-      @ins.draw(text, hpos.x, hpos.y, 6, 1, 1, BORDER)
+      @ins.draw_text(text, hpos.x, hpos.y, 6, 1, 1, BORDER)
     end
   end
 end

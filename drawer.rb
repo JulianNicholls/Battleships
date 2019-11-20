@@ -34,19 +34,19 @@ module Battleships
       size = Size.new(WIDTH - 2 * MARGIN, HEADER_HEIGHT)
       pos  = font.centred_in(text, size)
 
-      font.draw(text, pos.x + MARGIN, pos.y + MARGIN, 1, 1, 1, HEADER_TEXT)
+      font.draw_text(text, pos.x + MARGIN, pos.y + MARGIN, 1, 1, 1, HEADER_TEXT)
     end
 
     def title
       font = @window.font[:title]
       text = 'Computer'
       pos  = font.centred_in(text, Size.new(GRID_WIDTH, TITLE_HEIGHT))
-      font.draw(text, COMPUTER_GRID.x + pos.x, TITLE_TOP + pos.y, 1,
+      font.draw_text(text, COMPUTER_GRID.x + pos.x, TITLE_TOP + pos.y, 1,
                  1, 1, HEADER_TEXT)
 
       text = 'Player'
       pos  = font.centred_in(text, Size.new(GRID_WIDTH, TITLE_HEIGHT))
-      font.draw(text, PLAYER_GRID.x + pos.x, TITLE_TOP + pos.y, 1,
+      font.draw_text(text, PLAYER_GRID.x + pos.x, TITLE_TOP + pos.y, 1,
                  1, 1, HEADER_TEXT)
     end
 
@@ -69,7 +69,7 @@ module Battleships
         when :thinking    then  'Thinking...'
         end
 
-      @window.font[:info].draw(ins_text, INFO_AREA.x, INFO_AREA.y, 2, 1, 1, INFO)
+      @window.font[:info].draw_text(ins_text, INFO_AREA.x, INFO_AREA.y, 2, 1, 1, INFO)
     end
 
     private
